@@ -112,6 +112,21 @@
   animation: popSurprise 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
+/* Playful Toddler Greeting Wave */
+@keyframes handWave {
+  0% { transform: translateY(0) rotate(0deg); }
+  20% { transform: translateY(-8px) rotate(4deg); }
+  40% { transform: translateY(0) rotate(-4deg); }
+  60% { transform: translateY(-5px) rotate(3deg); }
+  80% { transform: translateY(0) rotate(-2deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+.animate-hand-wave {
+  animation: handWave 1.3s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
 /* Perfect mobile responsiveness - prevent accidental horizontal scroll */
 html, body {
   overflow-x: hidden;

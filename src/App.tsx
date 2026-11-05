@@ -17,7 +17,6 @@ import { SmartAppSheet } from './components/SmartAppSheet';
 import { Footer } from './components/Footer';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { InteractiveSparkles } from './components/InteractiveSparkles';
-import { WelcomeMascot } from './components/WelcomeMascot';
 import { AgeCategory, BundleItem, CartItem, Language, Product } from './types';
 import { PRODUCTS } from './data/products';
 import { TRANSLATIONS } from './data/translations';
@@ -320,14 +319,6 @@ export const App: React.FC = () => {
 
       {/* 12.1 Interactive Sparkles (Touch/Cursor trails & Click Starburst Explosion) */}
       <InteractiveSparkles />
-
-      {/* 12.2 Surprise Peeking Mascot Toddler Greeting Visitor */}
-      <WelcomeMascot
-        lang={lang}
-        onOpenShop={() => {
-          document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' });
-        }}
-      />
 
       {/* 12.5 Floating Smart App Install Badge (Appears after 7s or user interaction) */}
       {showFloatingInstallBadge && (

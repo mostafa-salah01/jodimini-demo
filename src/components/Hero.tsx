@@ -4,6 +4,7 @@ import { ArrowDown, Sparkles } from 'lucide-react';
 import { Language } from '../types';
 import { TRANSLATIONS } from '../data/translations';
 import { HandwritingTitle } from './HandwritingTitle';
+import { HeroChildGreeting } from './HeroChildGreeting';
 
 interface HeroProps {
   lang: Language;
@@ -13,21 +14,31 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
   const t = TRANSLATIONS[lang];
   const videoRef = useRef<HTMLVideoElement>(null);
   const heroLettersRef = useRef<HTMLDivElement>(null);
-  const [shouldPlayVideo, setShouldPlayVideo] = useState(false);
+  const [shouldPlayVideo, setShouldPlayVideo] = useState(true);
 
-  // Check user preferences for motion and data saving
+  // Check user preferences for motion and data saving, and trigger autoplay
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    // Check if network connection has saveData enabled
     const nav = navigator as unknown as { connection?: { saveData?: boolean } };
     const saveData = nav.connection?.saveData === true;
 
-    if (!prefersReducedMotion && !saveData) {
-      setShouldPlayVideo(true);
-    } else {
+    if (prefersReducedMotion || saveData) {
       setShouldPlayVideo(false);
+    } else {
+      setShouldPlayVideo(true);
     }
   }, []);
+
+  // Force play video on mount
+  useEffect(() => {
+    if (videoRef.current && shouldPlayVideo) {
+      videoRef.current.muted = true;
+      videoRef.current.defaultMuted = true;
+      videoRef.current.play().catch(() => {
+        // Fallback gracefully if browser policy blocks autoplay
+      });
+    }
+  }, [shouldPlayVideo]);
 
   // GSAP bouncy letter-by-letter entrance for JodiMini - runs once on load
   useEffect(() => {
@@ -94,16 +105,16 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
             muted
             loop
             playsInline
-            preload="metadata"
-            poster="/images/hero-poster.webp"
+            preload="auto"
+            poster="./images/hero-poster.webp"
             className="w-full h-full object-cover object-center scale-102"
             aria-hidden="true"
           >
-            <source src="/videos/hero-video.mp4" type="video/mp4" />
+            <source src="./videos/hero-video.mp4" type="video/mp4" />
           </video>
         ) : (
           <img
-            src="/images/hero-poster.webp"
+            src="./images/hero-poster.webp"
             alt="أطفال يرتدون أزياء JodiMini"
             className="w-full h-full object-cover object-center"
             fetchPriority="high"
@@ -124,6 +135,9 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
           }`}
         />
         <div className="absolute inset-0 bg-[#3B4B59]/25 backdrop-contrast-105" />
+
+        {/* Hero Real Child Greeting Animation (Appears at video, waves to visitor, then slides out) */}
+        <HeroChildGreeting lang={lang} />
       </div>
 
       {/* Hero Content Container */}
