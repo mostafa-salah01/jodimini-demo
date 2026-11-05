@@ -3,6 +3,7 @@ import { Sparkles, ShoppingBag, Gift, Check, Tag } from 'lucide-react';
 import { BundleItem, Language, Product } from '../types';
 import { BUNDLES, PRODUCTS } from '../data/products';
 import { TRANSLATIONS } from '../data/translations';
+import { HandwritingTitle } from './HandwritingTitle';
 
 interface BundlesSectionProps {
   lang: Language;
@@ -41,7 +42,7 @@ export const BundlesSection: React.FC<BundlesSectionProps> = ({
             <span>{lang === 'ar' ? 'وفّري أكثر مع كل باقة' : 'Bundle & Save More'}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#3B4B59]">
-            {t.bundlesTitle}
+            <HandwritingTitle text={t.bundlesTitle} penColor="#F26B4E" />
           </h2>
           <p className="mt-3 text-base sm:text-lg text-[#3B4B59]/80 font-medium">
             {t.bundlesSubtitle}

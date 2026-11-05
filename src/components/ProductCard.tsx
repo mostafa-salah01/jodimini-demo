@@ -17,9 +17,32 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   onAddToCartDirect,
 }) => {
   const t = TRANSLATIONS[lang];
+  const [isVisible, setIsVisible] = React.useState(false);
+  const cardRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    if (cardRef.current) observer.observe(cardRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <div className="group relative bg-white rounded-3xl overflow-hidden border border-[#3B4B59]/10 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full transform hover:-translate-y-1">
+    <div
+      ref={cardRef}
+      className={`group relative bg-white rounded-3xl overflow-hidden border border-[#3B4B59]/10 shadow-sm hover:shadow-xl transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1) flex flex-col h-full transform hover:-translate-y-2 ${
+        isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-95'
+      }`}
+    >
       {/* Image Container with 4:5 aspect ratio */}
       <div
         className="relative aspect-[4/5] w-full overflow-hidden bg-[#FBF8F4] cursor-pointer select-none"

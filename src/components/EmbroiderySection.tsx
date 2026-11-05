@@ -3,6 +3,7 @@ import { Sparkles, ShoppingBag, Palette, Type, Check } from 'lucide-react';
 import { Language, Product } from '../types';
 import { EMBROIDERY_COLORS, EMBROIDERY_FONTS } from '../data/products';
 import { TRANSLATIONS } from '../data/translations';
+import { HandwritingTitle } from './HandwritingTitle';
 
 interface EmbroiderySectionProps {
   lang: Language;
@@ -48,7 +49,7 @@ export const EmbroiderySection: React.FC<EmbroiderySectionProps> = ({
             <span>{lang === 'ar' ? 'خدمة التطريز الملكية الخاصة' : 'Bespoke Custom Embroidery'}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#3B4B59] leading-tight">
-            {t.embroiderySectionTitle}
+            <HandwritingTitle text={t.embroiderySectionTitle} penColor="#20969B" />
           </h2>
           <p className="mt-3 text-base sm:text-lg text-[#3B4B59]/80 font-medium leading-relaxed">
             {t.embroiderySectionSubtitle}

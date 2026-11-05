@@ -3,6 +3,7 @@ import { Star, ShieldCheck, Heart } from 'lucide-react';
 import { Language } from '../types';
 import { REVIEWS } from '../data/products';
 import { TRANSLATIONS } from '../data/translations';
+import { HandwritingTitle } from './HandwritingTitle';
 
 interface ReviewsSectionProps {
   lang: Language;
@@ -28,7 +29,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ lang }) => {
           </div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#3B4B59]">
-            {t.reviewsTitle}
+            <HandwritingTitle text={t.reviewsTitle} penColor="#F497A9" />
           </h2>
           <p className="mt-3 text-base sm:text-lg text-[#3B4B59]/80 font-medium">
             {t.reviewsSubtitle}

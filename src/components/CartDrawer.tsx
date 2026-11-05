@@ -13,6 +13,8 @@ interface CartDrawerProps {
   onRemoveItem: (itemId: string) => void;
   onOpenCheckout: () => void;
   onQuickAddProduct: (product: Product) => void;
+  activeCoupon?: string | null;
+  onApplyCoupon?: (code: string) => void;
 }
 
 export const CartDrawer: React.FC<CartDrawerProps> = ({
@@ -24,8 +26,11 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   onRemoveItem,
   onOpenCheckout,
   onQuickAddProduct,
+  activeCoupon = null,
+  onApplyCoupon,
 }) => {
   const t = TRANSLATIONS[lang];
+  const [couponInput, setCouponInput] = React.useState('');
 
   if (!isOpen) return null;
 
@@ -45,9 +50,10 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
   const remainingForFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
   const progressPercent = Math.min(100, Math.round((subtotal / FREE_SHIPPING_THRESHOLD) * 100));
-  const isFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
+  const isFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD || activeCoupon === 'FREE200';
   const shippingFee = isFreeShipping || subtotal === 0 ? 0 : 25;
-  const total = subtotal + shippingFee;
+  const discountAmount = activeCoupon === 'JODI20' ? Math.round(subtotal * 0.2) : 0;
+  const total = Math.max(0, subtotal - discountAmount + shippingFee);
 
   // Find an upsell item (e.g. product-02 or product-08 which are affordable accessories/tees)
   const upsellProduct = PRODUCTS.find(
@@ -280,12 +286,67 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
           {/* Footer Checkout Summary */}
           {cartItems.length > 0 && (
-            <div className="p-4 sm:p-5 border-t border-[#3B4B59]/10 bg-white space-y-3">
+            <div className="p-4 sm:p-5 border-t border-[#3B4B59]/10 bg-white space-y-3.5">
+              {/* Promo Coupon Box */}
+              <div className="p-2.5 rounded-2xl bg-[#FBF8F4] border border-[#F497A9]/40 space-y-2">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={couponInput}
+                    onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                    placeholder={lang === 'ar' ? 'كود الخصم (مثال: JODI20)' : 'Coupon code (e.g. JODI20)'}
+                    className="flex-1 px-3 py-1.5 text-xs font-bold rounded-xl border border-[#3B4B59]/20 bg-white uppercase focus:border-[#20969B] focus:outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (couponInput.trim()) {
+                        onApplyCoupon?.(couponInput.trim());
+                      }
+                    }}
+                    className="px-3 py-1.5 rounded-xl bg-[#20969B] text-white text-xs font-bold hover:bg-[#20969B]/90 transition-all active:scale-95"
+                  >
+                    {lang === 'ar' ? 'تطبيق' : 'Apply'}
+                  </button>
+                </div>
+
+                {/* Available Quick Codes */}
+                <div className="flex items-center gap-2 text-[11px]">
+                  <span className="text-[#3B4B59]/60 font-semibold">{lang === 'ar' ? 'متاح:' : 'Available:'}</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCouponInput('JODI20');
+                      onApplyCoupon?.('JODI20');
+                    }}
+                    className="px-2 py-0.5 rounded-lg bg-white border border-[#F26B4E]/30 text-[#F26B4E] font-black hover:bg-[#F26B4E] hover:text-white transition-colors"
+                  >
+                    JODI20 (-20%)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCouponInput('FREE200');
+                      onApplyCoupon?.('FREE200');
+                    }}
+                    className="px-2 py-0.5 rounded-lg bg-white border border-[#20969B]/30 text-[#20969B] font-black hover:bg-[#20969B] hover:text-white transition-colors"
+                  >
+                    FREE200
+                  </button>
+                </div>
+              </div>
+
               <div className="space-y-1.5 text-xs font-semibold text-[#3B4B59]/80">
                 <div className="flex justify-between">
                   <span>{t.subtotal}</span>
                   <span className="font-bold text-[#3B4B59]">{subtotal} {t.currency}</span>
                 </div>
+                {discountAmount > 0 && (
+                  <div className="flex justify-between text-[#20969B] font-bold">
+                    <span>{lang === 'ar' ? `خصم الكوبون (${activeCoupon})` : `Coupon Discount (${activeCoupon})`}</span>
+                    <span>-{discountAmount} {t.currency}</span>
+                  </div>
+                )}
                 <div className="flex justify-between">
                   <span>{t.shippingFee}</span>
                   <span className="font-bold text-[#20969B]">

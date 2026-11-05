@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Sparkles, Copy, Check, ArrowDown } from 'lucide-react';
 import { Language } from '../types';
 import { TRANSLATIONS } from '../data/translations';
+import { HandwritingTitle } from './HandwritingTitle';
 
 interface WhiteFridaySectionProps {
   lang: Language;
@@ -81,7 +82,7 @@ export const WhiteFridaySection: React.FC<WhiteFridaySectionProps> = ({ lang }) 
 
         {/* Big Heading */}
         <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight filter drop-shadow-md">
-          {t.whiteFridayTitle}
+          <HandwritingTitle text={t.whiteFridayTitle} penColor="#F9A620" />
         </h2>
 
         {/* Subtitle */}

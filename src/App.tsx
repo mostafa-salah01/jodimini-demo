@@ -21,6 +21,8 @@ import { InteractiveSparkles } from './components/InteractiveSparkles';
 import { AgeCategory, BundleItem, CartItem, Language, Product } from './types';
 import { PRODUCTS } from './data/products';
 import { TRANSLATIONS } from './data/translations';
+import { CouponBanner } from './components/CouponBanner';
+import { HandwritingTitle } from './components/HandwritingTitle';
 import { Check, Sparkles, Smartphone } from 'lucide-react';
 import { usePWAInstall, isAppRunningAsPWA } from './hooks/usePWAInstall';
 
@@ -221,6 +223,20 @@ export const App: React.FC = () => {
     setCartItems((prev) => prev.filter((item) => item.id !== itemId));
   };
 
+  // Coupon State
+  const [activeCoupon, setActiveCoupon] = useState<string | null>('JODI20');
+
+  const handleApplyCoupon = (code: string) => {
+    setActiveCoupon(code);
+    if (code === 'JODI20') {
+      showToast(lang === 'ar' ? '🎉 تم تطبيق كود JODI20 بنجاح! خصم 20%' : '🎉 JODI20 applied! 20% discount');
+    } else if (code === 'FREE200') {
+      showToast(lang === 'ar' ? '🚚 تم تطبيق كود FREE200! شحن مجاني لكافة المدن' : '🚚 FREE200 applied! Free Express Shipping');
+    } else {
+      showToast(lang === 'ar' ? `✨ تم تطبيق كود الخصم: ${code}` : `✨ Applied coupon: ${code}`);
+    }
+  };
+
   // Total cart calculation for checkout
   const cartSubtotal = cartItems.reduce((acc, item) => {
     let p = item.product.price;
@@ -228,8 +244,9 @@ export const App: React.FC = () => {
     if (item.isGift) p += 15;
     return acc + p * item.quantity;
   }, 0);
-  const cartShipping = cartSubtotal >= 200 || cartSubtotal === 0 ? 0 : 25;
-  const cartTotal = cartSubtotal + cartShipping;
+  const couponDiscount = activeCoupon === 'JODI20' ? Math.round(cartSubtotal * 0.2) : 0;
+  const cartShipping = (cartSubtotal >= 200 || activeCoupon === 'FREE200' || cartSubtotal === 0) ? 0 : 25;
+  const cartTotal = Math.max(0, cartSubtotal - couponDiscount + cartShipping);
 
   return (
     <div className="min-h-screen bg-[#FBF8F4] flex flex-col font-sans text-[#3B4B59]">
@@ -261,6 +278,13 @@ export const App: React.FC = () => {
         {/* 5. Payment & Shipping Marquee */}
         <PaymentShippingMarquee lang={lang} />
 
+        {/* 5.1 Interactive Discount Promo Coupon Banner */}
+        <CouponBanner
+          lang={lang}
+          onApplyCoupon={handleApplyCoupon}
+          activeCoupon={activeCoupon}
+        />
+
         {/* 6. Products Grid (9 products) */}
         <section id="products" className="py-16 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
@@ -270,7 +294,7 @@ export const App: React.FC = () => {
                 <span>{lang === 'ar' ? 'تشكيلة حصرية' : 'Exclusive Collection'}</span>
               </div>
               <h2 className="text-3xl sm:text-4xl font-black text-[#3B4B59]">
-                {t.productsTitle}
+                <HandwritingTitle text={t.productsTitle} penColor="#20969B" />
               </h2>
               <p className="mt-1 text-sm sm:text-base text-[#3B4B59]/75 font-medium">
                 {t.productsSubtitle}
@@ -365,6 +389,8 @@ export const App: React.FC = () => {
           setIsCheckoutOpen(true);
         }}
         onQuickAddProduct={handleDirectAdd}
+        activeCoupon={activeCoupon}
+        onApplyCoupon={handleApplyCoupon}
       />
 
       <CheckoutModal
