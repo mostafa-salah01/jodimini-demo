@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { PenTool } from 'lucide-react';
 
 interface HandwritingTitleProps {
@@ -6,74 +6,104 @@ interface HandwritingTitleProps {
   className?: string;
   penColor?: string;
   speedMs?: number;
+  showUnderline?: boolean;
 }
 
 export const HandwritingTitle: React.FC<HandwritingTitleProps> = ({
   text,
   className = '',
   penColor = '#F26B4E',
-  speedMs = 45,
+  speedMs = 38,
+  showUnderline = true,
 }) => {
-  const [displayedText, setDisplayedText] = useState(text);
+  const [displayedText, setDisplayedText] = useState('');
   const [isWriting, setIsWriting] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
+  const containerRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    const isMobile = window.innerWidth < 768 || 'ontouchstart' in window;
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (typeof window === 'undefined') return;
 
-    if (isMobile || prefersReducedMotion) {
-      setDisplayedText(text);
-      setIsWriting(false);
-      return;
+    // Trigger writing once the title scrolls into the viewport
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !hasStarted) {
+              setHasStarted(true);
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
+
+      if (containerRef.current) {
+        observer.observe(containerRef.current);
+      }
+
+      return () => observer.disconnect();
+    } else {
+      setHasStarted(true);
     }
+  }, [hasStarted]);
 
-    setDisplayedText('');
+  useEffect(() => {
+    if (!hasStarted) return;
+
     setIsWriting(true);
+    setDisplayedText('');
 
-    let index = 0;
+    let currentIndex = 0;
     const interval = setInterval(() => {
-      index++;
-      if (index <= text.length) {
-        setDisplayedText(text.slice(0, index));
+      currentIndex++;
+      if (currentIndex <= text.length) {
+        setDisplayedText(text.slice(0, currentIndex));
       } else {
         clearInterval(interval);
-        setTimeout(() => setIsWriting(false), 500);
+        setTimeout(() => setIsWriting(false), 400);
       }
     }, speedMs);
 
     return () => clearInterval(interval);
-  }, [text, speedMs]);
+  }, [hasStarted, text, speedMs]);
 
   return (
-    <span className={`relative inline-block ${className}`}>
-      <span>{displayedText}</span>
-      {/* Animated Pen Nib Follower */}
+    <span ref={containerRef} className={`relative inline-block ${className}`}>
+      <span>{hasStarted ? displayedText : ''}</span>
+
+      {/* Hand-writing Stylus Follower (hand/pen drawing the words) */}
       {isWriting && (
         <span
-          className="inline-block ms-1 -mb-1 animate-bounce"
+          className="inline-flex items-center ms-1.5 -mb-1 select-none animate-bounce"
           style={{ color: penColor }}
-          title="قلم الكتابة الحي"
+          aria-hidden="true"
         >
-          <PenTool className="w-5 h-5 sm:w-6 sm:h-6 inline-block transform -rotate-45 filter drop-shadow-sm transition-transform" />
+          <span className="text-base sm:text-xl transform -rotate-12 inline-block filter drop-shadow-md">
+            ✍️
+          </span>
+          <PenTool className="w-4 h-4 sm:w-5 sm:h-5 transform -rotate-45 -ms-1 filter drop-shadow-xs" />
         </span>
       )}
-      {/* Hand-drawn ink underline */}
-      <svg
-        className="w-full h-3 sm:h-4 -mt-1 overflow-visible block"
-        viewBox="0 0 200 12"
-        fill="none"
-        preserveAspectRatio="none"
-      >
-        <path
-          d="M2 9 C 45 3, 135 11, 198 4"
-          stroke={penColor}
-          strokeWidth="3.5"
-          strokeLinecap="round"
-          strokeDasharray="220"
-          strokeDashoffset={isWriting ? 220 - (displayedText.length / text.length) * 220 : 0}
-          className="transition-all duration-150"
-        />
-      </svg>
+
+      {/* Smooth Ink Underline that draws as the pen writes */}
+      {showUnderline && hasStarted && (
+        <svg
+          className="w-full h-2.5 sm:h-3.5 -mt-0.5 overflow-visible block"
+          viewBox="0 0 200 10"
+          fill="none"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M2 7 C 45 2, 135 9, 198 3"
+            stroke={penColor}
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeDasharray="220"
+            strokeDashoffset={isWriting ? 220 - (displayedText.length / Math.max(1, text.length)) * 220 : 0}
+            className="transition-all duration-100"
+          />
+        </svg>
+      )}
     </span>
   );
 };

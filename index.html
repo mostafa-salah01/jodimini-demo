@@ -43,10 +43,7 @@
     <link rel="apple-touch-icon" sizes="192x192" href="./pwa-192x192.png" />
     <link rel="apple-touch-icon" sizes="512x512" href="./pwa-512x512.png" />
 
-    <!-- Preload Hero Poster for ultra-fast LCP -->
-    <link rel="preload" as="image" href="./images/hero-poster.webp" type="image/webp" fetchpriority="high" />
-
-    <!-- Fonts: Baloo Bhaijaan 2 for Arabic & Latin round elegance -->
+    <!-- Preload Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -94,7 +91,29 @@
   <body class="bg-[#FBF8F4] text-[#3B4B59] antialiased selection:bg-[#F497A9]/30 selection:text-[#3B4B59] min-h-screen">
     <div id="root"></div>
 
-    <!-- Application entry point -->
-    <script type="module" src="/src/main.tsx"></script>
+    <!-- Universal Smart Loader (Seamless for both Vite Dev server & Static GitHub Pages hosting) -->
+    <script type="module">
+      const isStaticProd = Boolean(
+        window.location.hostname.includes('github.io') ||
+        window.location.hostname.includes('codix.uk') ||
+        (!window.location.port && window.location.protocol !== 'file:')
+      );
+
+      if (isStaticProd) {
+        if (!document.querySelector('link[href*="style.css"]')) {
+          const l = document.createElement('link');
+          l.rel = 'stylesheet';
+          l.href = './assets/style.css';
+          document.head.appendChild(l);
+        }
+        import('./assets/app.js').catch(function(err) {
+          console.error('JodiMini static bundle load failed:', err);
+        });
+      } else {
+        import('/src/main.tsx').catch(function(err) {
+          console.error('JodiMini dev load failed:', err);
+        });
+      }
+    </script>
   </body>
 </html>
