@@ -16,6 +16,7 @@ import { CheckoutModal } from './components/CheckoutModal';
 import { SmartAppSheet } from './components/SmartAppSheet';
 import { Footer } from './components/Footer';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
+import { HeroChildGreeting } from './components/HeroChildGreeting';
 import { InteractiveSparkles } from './components/InteractiveSparkles';
 import { AgeCategory, BundleItem, CartItem, Language, Product } from './types';
 import { PRODUCTS } from './data/products';
@@ -340,6 +341,9 @@ export const App: React.FC = () => {
 
       {/* 12. Floating WhatsApp button */}
       <FloatingWhatsApp lang={lang} />
+
+      {/* 12.05 Real Child Welcome Greeting (Slides in when user scrolls down to products section & stays waving) */}
+      <HeroChildGreeting lang={lang} />
 
       {/* 12.1 Interactive Sparkles (Touch/Cursor trails & Click Starburst Explosion) */}
       <InteractiveSparkles />

@@ -167,6 +167,9 @@ define(['./workbox-7e5eb42b'], (function (workbox) { 'use strict';
     "url": "assets/aistudio/image_a4bf3ce7.png",
     "revision": null
   }, {
+    "url": "assets/aistudio/image_9543a9fd.png",
+    "revision": null
+  }, {
     "url": "assets/aistudio/image_747db87d.png",
     "revision": null
   }, {

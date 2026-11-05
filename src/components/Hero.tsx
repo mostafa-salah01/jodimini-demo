@@ -4,7 +4,6 @@ import { ArrowDown, Sparkles } from 'lucide-react';
 import { Language } from '../types';
 import { TRANSLATIONS } from '../data/translations';
 import { HandwritingTitle } from './HandwritingTitle';
-import { HeroChildGreeting } from './HeroChildGreeting';
 
 interface HeroProps {
   lang: Language;
@@ -148,9 +147,6 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
 
         {/* Very subtle bottom vignette for seamless section transition, video remains 100% natural and bright */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
-
-        {/* Hero Real Child Greeting Animation (Appears at video, waves to visitor, then slides out) */}
-        <HeroChildGreeting lang={lang} />
       </div>
 
       {/* Hero Content Container */}
