@@ -87,7 +87,7 @@ define(['./workbox-7e5eb42b'], (function (workbox) { 'use strict';
     "revision": "d409ec98a3b63508e19fb49d96c8bbe6"
   }, {
     "url": "index.html",
-    "revision": "a2ce9d5531921b73e3c94614347243f2"
+    "revision": "61a7ca3823c2d7fe8a15bcb553c7bbc9"
   }, {
     "url": "favicon.png",
     "revision": "d409ec98a3b63508e19fb49d96c8bbe6"
@@ -143,19 +143,22 @@ define(['./workbox-7e5eb42b'], (function (workbox) { 'use strict';
     "url": "images/banner-whitefriday.webp",
     "revision": "2f9af9219df7c607ff94bff2d9799194"
   }, {
-    "url": "assets/logo-B25F3AmR.png",
+    "url": "assets/style.css",
     "revision": null
   }, {
-    "url": "assets/index-Tony7xbj.js",
+    "url": "assets/logo.png",
     "revision": null
   }, {
-    "url": "assets/index-DF1CGW15.css",
+    "url": "assets/hero-poster.webp",
     "revision": null
   }, {
-    "url": "assets/hero-poster-D6VJgeb_.webp",
+    "url": "assets/app.js",
     "revision": null
   }, {
     "url": "assets/aistudio/image_df5f6672.png",
+    "revision": null
+  }, {
+    "url": "assets/aistudio/image_a4bf3ce7.png",
     "revision": null
   }, {
     "url": "assets/aistudio/image_474640c0.png",

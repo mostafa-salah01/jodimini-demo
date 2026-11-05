@@ -29,15 +29,31 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
     }
   }, []);
 
-  // Force play video on mount
+  // Force play video on mount & ensure mobile playback compatibility
   useEffect(() => {
-    if (videoRef.current && shouldPlayVideo) {
-      videoRef.current.muted = true;
-      videoRef.current.defaultMuted = true;
-      videoRef.current.play().catch(() => {
-        // Fallback gracefully if browser policy blocks autoplay
+    const video = videoRef.current;
+    if (!video || !shouldPlayVideo) return;
+
+    video.muted = true;
+    video.defaultMuted = true;
+    video.setAttribute('muted', '');
+    video.setAttribute('playsinline', '');
+    video.setAttribute('webkit-playsinline', '');
+
+    const tryPlay = () => {
+      video.play().catch(() => {
+        // If browser blocks immediate autoplay, resume on first user interaction
+        const resumeOnTouch = () => {
+          video.play().catch(() => {});
+          window.removeEventListener('touchstart', resumeOnTouch);
+          window.removeEventListener('click', resumeOnTouch);
+        };
+        window.addEventListener('touchstart', resumeOnTouch, { once: true, passive: true });
+        window.addEventListener('click', resumeOnTouch, { once: true, passive: true });
       });
-    }
+    };
+
+    tryPlay();
   }, [shouldPlayVideo]);
 
   // GSAP bouncy letter-by-letter entrance for JodiMini - runs once on load
@@ -109,6 +125,8 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
             poster="./images/hero-poster.webp"
             className="w-full h-full object-cover object-center scale-102"
             aria-hidden="true"
+            onCanPlay={() => videoRef.current?.play().catch(() => {})}
+            onError={() => setShouldPlayVideo(false)}
           >
             <source src="./videos/hero-video.mp4" type="video/mp4" />
           </video>

@@ -56,6 +56,63 @@
   </head>
   <body class="bg-[#FBF8F4] text-[#3B4B59] antialiased selection:bg-[#F497A9]/30 selection:text-[#3B4B59] min-h-screen">
     <div id="root"></div>
+
+    <!-- Fail-safe loader: If GitHub Pages is served statically from root branch without Vite compilation -->
+    <script>
+      (function() {
+        var isStaticHost = window.location.hostname.includes('github.io') || 
+                           window.location.hostname.includes('github.dev') ||
+                           window.location.protocol === 'file:';
+        if (isStaticHost) {
+          // Pre-inject compiled CSS for instant paint
+          if (!document.querySelector('link[href*="assets/style.css"]')) {
+            var css = document.createElement('link');
+            css.rel = 'stylesheet';
+            css.href = './assets/style.css';
+            document.head.appendChild(css);
+          }
+        }
+
+        window.__jodimini_mounted = false;
+        function loadFallback() {
+          if (window.__jodimini_mounted || window.__loading_fallback) return;
+          window.__loading_fallback = true;
+
+          if (!document.querySelector('link[href*="assets/style.css"]')) {
+            var css = document.createElement('link');
+            css.rel = 'stylesheet';
+            css.href = './assets/style.css';
+            document.head.appendChild(css);
+          }
+
+          var script = document.createElement('script');
+          script.type = 'module';
+          script.crossOrigin = 'anonymous';
+          script.src = './assets/app.js';
+          document.body.appendChild(script);
+        }
+
+        window.addEventListener('error', function(e) {
+          if (!window.__jodimini_mounted && e && e.message && (
+            e.message.indexOf('module') !== -1 || 
+            e.message.indexOf('resolve') !== -1 || 
+            e.message.indexOf('Unexpected') !== -1 ||
+            (e.filename && e.filename.indexOf('main.tsx') !== -1)
+          )) {
+            loadFallback();
+          }
+        });
+
+        // If static host and root is still empty after 350ms, trigger bundle load
+        setTimeout(function() {
+          var root = document.getElementById('root');
+          if (!window.__jodimini_mounted && (!root || !root.hasChildNodes())) {
+            loadFallback();
+          }
+        }, 350);
+      })();
+    </script>
+
     <script type="module" src="./src/main.tsx"></script>
   </body>
 </html>
