@@ -68,10 +68,17 @@ export const Header: React.FC<HeaderProps> = ({
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-2xl font-extrabold tracking-tight text-[#3B4B59] leading-tight">
-                Jodi<span className="text-[#F26B4E]">Mini</span>
+              <span dir="ltr" className="text-2xl font-black tracking-tight leading-tight select-none inline-flex items-baseline">
+                <span className="text-[#20969B]">J</span>
+                <span className="text-[#F9A620]">o</span>
+                <span className="text-[#F497A9]">d</span>
+                <span className="text-[#F26B4E]">i</span>
+                <span className="text-[#20969B]">M</span>
+                <span className="text-[#3B4B59]">i</span>
+                <span className="text-[#F9A620]">n</span>
+                <span className="text-[#F497A9]">i</span>
               </span>
-              <span className="text-[11px] font-semibold text-[#20969B] -mt-1 tracking-wider">
+              <span className="text-[11px] font-bold text-[#20969B] -mt-0.5 tracking-wider">
                 {lang === 'ar' ? 'أزياء أطفال سعودية' : 'Saudi Kids Fashion'}
               </span>
             </div>
@@ -84,7 +91,7 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               key={link.href}
               onClick={() => handleNavClick(link.href)}
-              className="px-3.5 py-2 text-sm lg:text-base font-semibold text-[#3B4B59] hover:text-[#F26B4E] hover:bg-white/60 rounded-xl transition-all"
+              className="px-3.5 py-2 text-sm lg:text-base font-bold text-[#3B4B59] hover:text-[#F26B4E] hover:bg-white rounded-xl transition-all"
             >
               {link.label}
             </button>
@@ -97,10 +104,10 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={onOpenSmartApp}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-black text-white bg-gradient-to-r from-[#20969B] to-[#3B4B59] hover:from-[#F26B4E] hover:to-[#F26B4E] shadow-xs hover:shadow-md transition-all active:scale-95 group"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-black text-white bg-gradient-to-r from-[#20969B] to-[#F26B4E] hover:from-[#F26B4E] hover:to-[#20969B] shadow-xs hover:shadow-md transition-all active:scale-95 group"
             title={lang === 'ar' ? 'تحميل تطبيق JodiMini على هاتفك' : 'Install JodiMini App'}
           >
-            <Smartphone className="w-3.5 h-3.5 text-[#F9A620] group-hover:text-white transition-colors" />
+            <Smartphone className="w-3.5 h-3.5 text-white group-hover:rotate-12 transition-transform" />
             <span className="hidden xs:inline">
               {lang === 'ar' ? 'حمّلي التطبيق' : 'Install App'}
             </span>
@@ -110,23 +117,23 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={onToggleLang}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold text-[#3B4B59] bg-white border border-[#3B4B59]/15 hover:border-[#20969B] hover:text-[#20969B] shadow-xs transition-all active:scale-95"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold text-[#3B4B59] bg-white border border-[#F497A9]/40 hover:border-[#20969B] hover:text-[#20969B] shadow-xs transition-all active:scale-95"
             aria-label={`Switch to ${t.switchLanguage}`}
           >
             <Globe className="w-3.5 h-3.5 text-[#20969B]" />
             <span>{t.switchLanguage}</span>
           </button>
 
-          {/* Cart Button */}
+          {/* Cart Button with warm cheerful brand colors */}
           <button
             type="button"
             onClick={onOpenCart}
-            className="relative flex items-center justify-center w-11 h-11 rounded-2xl bg-[#3B4B59] text-white hover:bg-[#F26B4E] shadow-sm transition-all duration-200 active:scale-95 group focus:outline-none focus:ring-2 focus:ring-[#F26B4E]"
+            className="relative flex items-center justify-center w-11 h-11 rounded-2xl bg-gradient-to-r from-[#F26B4E] to-[#F497A9] hover:from-[#F497A9] hover:to-[#F26B4E] text-white shadow-md shadow-[#F26B4E]/30 transition-all duration-200 active:scale-95 group focus:outline-none focus:ring-2 focus:ring-[#F26B4E]"
             aria-label="View Shopping Cart"
           >
             <ShoppingBag className="w-5 h-5 transition-transform group-hover:scale-110" />
             {cartCount > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 bg-[#F26B4E] text-white text-[11px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-[#FBF8F4] shadow-xs animate-bounce">
+              <span className="absolute -top-1.5 -right-1.5 bg-[#20969B] text-white text-[11px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-xs animate-bounce">
                 {cartCount}
               </span>
             )}

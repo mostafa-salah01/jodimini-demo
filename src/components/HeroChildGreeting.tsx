@@ -1,68 +1,79 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Language } from '../types';
 
 interface HeroChildGreetingProps {
   lang: Language;
 }
 
-export const HeroChildGreeting: React.FC<HeroChildGreetingProps> = ({ lang }) => {
-  // State to control lifecycle: 'entering' -> 'waving' -> 'exiting' -> 'hidden'
+export const HeroChildGreeting: React.FC<HeroChildGreetingProps> = () => {
+  // Stages: 'entering' -> 'waving' -> 'exiting' -> 'hidden'
   const [stage, setStage] = useState<'entering' | 'waving' | 'exiting' | 'hidden'>('entering');
+  const stageRef = useRef(stage);
+  stageRef.current = stage;
 
   useEffect(() => {
-    // 1. Enter and wave immediately on page load
-    const waveTimer = setTimeout(() => {
+    // 1. Slide in immediately on mount and start waving
+    const enterTimer = setTimeout(() => {
       setStage('waving');
-    }, 400);
+    }, 300);
 
-    // 2. Wave for 3.5 seconds, then slide back out
-    const exitTimer = setTimeout(() => {
-      setStage('exiting');
-    }, 3800);
+    // 2. Stay for 30 seconds while user is looking, then smoothly exit
+    const autoExitTimer = setTimeout(() => {
+      if (stageRef.current === 'waving') {
+        triggerExit();
+      }
+    }, 30000);
 
-    // 3. Completely hide/unmount after exit animation finishes
-    const hideTimer = setTimeout(() => {
-      setStage('hidden');
-    }, 4600);
+    // 3. Dismiss as soon as user starts scrolling down the page
+    const handleScroll = () => {
+      if (window.scrollY > 100 && stageRef.current === 'waving') {
+        triggerExit();
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
-      clearTimeout(waveTimer);
-      clearTimeout(exitTimer);
-      clearTimeout(hideTimer);
+      clearTimeout(enterTimer);
+      clearTimeout(autoExitTimer);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
-  if (stage === 'hidden') return null;
+  const triggerExit = () => {
+    setStage('exiting');
+    setTimeout(() => {
+      setStage('hidden');
+    }, 800);
+  };
 
-  // In Arabic RTL, text is on the right, so child appears from the left (opposite side)
-  // In English LTR, text is on the left, so child appears from the right
-  const isRTL = lang === 'ar';
+  if (stage === 'hidden') return null;
 
   return (
     <div
-      className={`absolute bottom-0 z-20 pointer-events-none transition-all duration-700 ease-out ${
-        isRTL
-          ? stage === 'exiting'
-            ? '-translate-x-full opacity-0'
-            : 'translate-x-0 start-4 sm:start-12'
+      onClick={triggerExit}
+      title="اضغط للإغلاق"
+      className={`absolute bottom-0 left-2 sm:left-6 md:left-12 z-20 pointer-events-auto cursor-pointer transition-all duration-700 ease-out transform ${
+        stage === 'entering'
+          ? '-translate-x-[120%] opacity-0'
           : stage === 'exiting'
-            ? 'translate-x-full opacity-0'
-            : 'translate-x-0 end-4 sm:end-12'
+          ? '-translate-x-[120%] opacity-0'
+          : 'translate-x-0 opacity-100'
       }`}
     >
-      <div className="relative flex flex-col items-center">
-        {/* Real Child Waving Figure */}
+      <div className="relative flex flex-col items-center group">
+        {/* Real Child Live Waving Cutout (100% Transparent PNG, no background) */}
         <div
-          className={`relative w-36 h-48 sm:w-48 sm:h-64 md:w-56 md:h-72 select-none filter drop-shadow-2xl ${
+          className={`relative w-40 h-52 sm:w-52 sm:h-68 md:w-64 md:h-80 select-none ${
             stage === 'waving' ? 'animate-hand-wave' : ''
           }`}
         >
           <img
             src="./images/real-child-waving.png"
-            alt="طفل حقيقي يرحب بالزائر بيده"
-            className="w-full h-full object-contain mix-blend-multiply filter contrast-105"
-            width="224"
-            height="288"
+            alt="طفلة حقيقية ترحب بالزائر بابتسامة وبيدها"
+            className="w-full h-full object-contain filter drop-shadow-[0_12px_28px_rgba(0,0,0,0.5)] transition-transform group-hover:scale-105"
+            width="256"
+            height="320"
             loading="eager"
             decoding="async"
           />

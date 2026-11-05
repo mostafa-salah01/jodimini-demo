@@ -142,17 +142,8 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
           />
         )}
 
-        {/* Directional Soft Gradient Overlay to ensure maximum text readability */}
-        {/* On Arabic RTL: darker on right where text is, transparent on left where video kids are */}
-        {/* On English LTR: darker on left where text is, transparent on right where video kids are */}
-        <div
-          className={`absolute inset-0 ${
-            lang === 'ar'
-              ? 'bg-gradient-to-l from-[#3B4B59]/90 via-[#3B4B59]/65 to-transparent'
-              : 'bg-gradient-to-r from-[#3B4B59]/90 via-[#3B4B59]/65 to-transparent'
-          }`}
-        />
-        <div className="absolute inset-0 bg-[#3B4B59]/25 backdrop-contrast-105" />
+        {/* Very subtle bottom vignette for seamless section transition, video remains 100% natural and bright */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
 
         {/* Hero Real Child Greeting Animation (Appears at video, waves to visitor, then slides out) */}
         <HeroChildGreeting lang={lang} />
@@ -160,23 +151,24 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
 
       {/* Hero Content Container */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 w-full">
-        <div className={`max-w-xl lg:max-w-2xl ${lang === 'ar' ? 'ms-0 me-auto md:me-0' : 'me-0 ms-auto md:ms-0'}`}>
+        <div className={`max-w-xl lg:max-w-2xl bg-black/25 backdrop-blur-[3px] p-6 sm:p-8 rounded-3xl border border-white/20 shadow-2xl ${lang === 'ar' ? 'ms-0 me-auto md:me-0' : 'me-0 ms-auto md:ms-0'}`}>
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 backdrop-blur-sm text-[#3B4B59] text-xs sm:text-sm font-bold shadow-md mb-5 border border-white/50 animate-pulse">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/95 backdrop-blur-sm text-[#3B4B59] text-xs sm:text-sm font-black shadow-md mb-5 border border-white/50 animate-pulse">
             <Sparkles className="w-4 h-4 text-[#F9A620]" />
             <span>{t.heroBadge}</span>
           </div>
 
           {/* Main Title with GSAP letter animation for JodiMini */}
           <div className="space-y-3">
-            <span className="block text-xl sm:text-2xl lg:text-3xl font-semibold text-[#FBF8F4]/95">
+            <span className="block text-xl sm:text-2xl lg:text-3xl font-semibold text-[#FBF8F4]/95 drop-shadow-md">
               {t.heroTitlePrefix}
             </span>
 
-            {/* Letter by letter bouncy hero name */}
+            {/* Letter by letter bouncy hero name with LTR explicitly enforced */}
             <div
               ref={heroLettersRef}
-              className="inline-flex items-baseline text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight filter drop-shadow-md pb-2 select-none"
+              dir="ltr"
+              className="inline-flex items-baseline text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight filter drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)] pb-2 select-none"
               aria-label="JodiMini"
             >
               {jodiMiniLetters.map((letter, idx) => (

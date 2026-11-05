@@ -26,8 +26,15 @@ export const Footer: React.FC<FooterProps> = ({ lang }) => {
                   height="48"
                 />
               </div>
-              <span className="text-2xl font-black tracking-tight text-white">
-                Jodi<span className="text-[#F26B4E]">Mini</span>
+              <span dir="ltr" className="text-2xl font-black tracking-tight leading-tight select-none inline-flex items-baseline">
+                <span className="text-[#20969B]">J</span>
+                <span className="text-[#F9A620]">o</span>
+                <span className="text-[#F497A9]">d</span>
+                <span className="text-[#F26B4E]">i</span>
+                <span className="text-[#20969B]">M</span>
+                <span className="text-[#FBF8F4]">i</span>
+                <span className="text-[#F9A620]">n</span>
+                <span className="text-[#F497A9]">i</span>
               </span>
             </div>
             <p className="text-xs sm:text-sm text-[#FBF8F4]/80 font-medium leading-relaxed">

@@ -96,7 +96,7 @@ define(['./workbox-7e5eb42b'], (function (workbox) { 'use strict';
     "revision": "d409ec98a3b63508e19fb49d96c8bbe6"
   }, {
     "url": "images/real-child-waving.png",
-    "revision": "40f75802e0faedbdbafb75f63151208e"
+    "revision": "f99600544cb943281381536989fce2df"
   }, {
     "url": "images/product-09.webp",
     "revision": "d590b077f631beab2ba6ddb004dc9df9"
@@ -162,6 +162,9 @@ define(['./workbox-7e5eb42b'], (function (workbox) { 'use strict';
     "revision": null
   }, {
     "url": "assets/aistudio/image_a4bf3ce7.png",
+    "revision": null
+  }, {
+    "url": "assets/aistudio/image_747db87d.png",
     "revision": null
   }, {
     "url": "assets/aistudio/image_474640c0.png",
@@ -234,7 +237,7 @@ define(['./workbox-7e5eb42b'], (function (workbox) { 'use strict';
     "revision": "40f75802e0faedbdbafb75f63151208e"
   }, {
     "url": "images/real-child-waving.png",
-    "revision": "40f75802e0faedbdbafb75f63151208e"
+    "revision": "f99600544cb943281381536989fce2df"
   }, {
     "url": "videos/hero-video.mp4",
     "revision": "a889f961a265a183328e414dd8583bb1"
