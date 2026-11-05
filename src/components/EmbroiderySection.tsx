@@ -73,11 +73,11 @@ export const EmbroiderySection: React.FC<EmbroiderySectionProps> = ({
 
               {/* Realistic Chest Stitched Overlay */}
               {/* Positioned on the chest of the outfit without covering child face */}
-              <div className="absolute top-[49%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 sm:w-56 text-center pointer-events-none transition-all duration-300">
-                <div className="inline-block px-4 py-2 rounded-2xl bg-white/20 backdrop-blur-[1px] border border-white/30 transform -rotate-2 shadow-xs">
+              <div className="absolute top-[49%] left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[85%] text-center pointer-events-none transition-all duration-300">
+                <div className="inline-block px-3 py-1.5 sm:px-4 sm:py-2 rounded-2xl bg-white/20 backdrop-blur-[1px] border border-white/30 transform -rotate-2 shadow-xs max-w-full">
                   {/* Stitched Thread Embroidery Text */}
                   <span
-                    className="embroidery-text block text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-wide select-none"
+                    className="embroidery-text block text-xl xs:text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-wide select-none truncate max-w-[240px] sm:max-w-xs"
                     style={{
                       color: selectedColor,
                       fontFamily: selectedFont,

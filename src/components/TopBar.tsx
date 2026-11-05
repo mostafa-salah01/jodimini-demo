@@ -41,8 +41,8 @@ export const TopBar: React.FC<TopBarProps> = ({ lang }) => {
   }, [targetDate]);
 
   return (
-    <div className="bg-gradient-to-r from-[#FFF9F5] via-[#FFF1F4] to-[#F0FAF9] text-[#3B4B59] text-xs md:text-sm py-2 px-3 relative z-50 border-b border-[#F497A9]/30 shadow-xs">
-      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1.5 md:gap-4 text-center">
+    <div className="bg-gradient-to-r from-[#FFF9F5] via-[#FFF1F4] to-[#F0FAF9] text-[#3B4B59] text-[11px] sm:text-xs md:text-sm py-1.5 sm:py-2 px-2.5 sm:px-3 relative z-50 border-b border-[#F497A9]/30 shadow-xs">
+      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1 sm:gap-4 text-center">
         {/* Shipping notice */}
         <div className="flex items-center justify-center gap-1.5 font-bold text-[#3B4B59]">
           <Sparkles className="w-4 h-4 text-[#F26B4E] animate-pulse shrink-0" />

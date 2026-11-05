@@ -1,5 +1,7 @@
 {
   "name": "JodiMini - متجر ملابس أطفال سعودي",
   "description": "صفحة هبوط تفاعلية لمتجر ملابس الأطفال السعودي JodiMini مع تجربة تسوق سريعة، ميزة تطريز الاسم وسلة مشتريات ذكية",
-  "capabilities": []
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

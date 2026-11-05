@@ -62,8 +62,8 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
         onClick={onClose}
       />
 
-      <div className="fixed inset-y-0 end-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-md bg-white shadow-2xl flex flex-col justify-between border-s border-[#3B4B59]/10 animate-in slide-in-from-right duration-300">
+      <div className="fixed inset-y-0 end-0 max-w-full flex">
+        <div className="w-screen max-w-full sm:max-w-md bg-white shadow-2xl flex flex-col justify-between border-s border-[#3B4B59]/10 animate-in slide-in-from-right duration-300">
           {/* Header */}
           <div className="p-4 sm:p-5 border-b border-[#3B4B59]/10 flex items-center justify-between bg-[#FBF8F4]">
             <div className="flex items-center gap-2">

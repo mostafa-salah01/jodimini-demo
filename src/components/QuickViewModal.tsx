@@ -50,7 +50,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-3xl bg-white rounded-3xl p-5 sm:p-7 shadow-2xl border border-[#3B4B59]/10 my-8 max-h-[90vh] overflow-y-auto"
+        className="relative w-full max-w-3xl bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-7 shadow-2xl border border-[#3B4B59]/10 my-auto max-h-[92vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}

@@ -21,7 +21,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <div className="group relative bg-white rounded-3xl overflow-hidden border border-[#3B4B59]/10 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full transform hover:-translate-y-1">
       {/* Image Container with 4:5 aspect ratio */}
-      <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#FBF8F4]">
+      <div
+        className="relative aspect-[4/5] w-full overflow-hidden bg-[#FBF8F4] cursor-pointer select-none"
+        onClick={() => onQuickView(product)}
+      >
         <img
           src={product.image}
           alt={product.name[lang]}
@@ -42,16 +45,24 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </div>
         )}
 
+        {/* Mobile quick tap indicator */}
+        <div className="md:hidden absolute top-3 end-3 w-8 h-8 rounded-full bg-white/90 text-[#3B4B59] shadow-xs flex items-center justify-center">
+          <Eye className="w-4 h-4 text-[#20969B]" />
+        </div>
+
         {/* Age pill */}
         <div className="absolute bottom-3 start-3 px-3 py-1 rounded-full text-xs font-bold bg-white/95 text-[#3B4B59] backdrop-blur-sm shadow-xs border border-[#3B4B59]/10">
           {product.ageLabel[lang]}
         </div>
 
-        {/* Quick View overlay button */}
-        <div className="absolute inset-0 bg-[#3B4B59]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center p-4">
+        {/* Desktop Quick View overlay button */}
+        <div className="hidden md:flex absolute inset-0 bg-[#3B4B59]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200 items-center justify-center p-4">
           <button
             type="button"
-            onClick={() => onQuickView(product)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onQuickView(product);
+            }}
             className="px-4 py-2.5 rounded-xl bg-white text-[#3B4B59] font-bold text-sm shadow-lg hover:bg-[#20969B] hover:text-white transition-all transform translate-y-2 group-hover:translate-y-0 duration-200 flex items-center gap-1.5 active:scale-95"
           >
             <Eye className="w-4 h-4" />

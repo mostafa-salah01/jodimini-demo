@@ -121,7 +121,7 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
             muted
             loop
             playsInline
-            preload="auto"
+            preload="metadata"
             poster="./images/hero-poster.webp"
             className="w-full h-full object-cover object-center scale-102"
             aria-hidden="true"
@@ -150,17 +150,17 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
       </div>
 
       {/* Hero Content Container */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 w-full">
-        <div className={`max-w-xl lg:max-w-2xl bg-black/25 backdrop-blur-[3px] p-6 sm:p-8 rounded-3xl border border-white/20 shadow-2xl ${lang === 'ar' ? 'ms-0 me-auto md:me-0' : 'me-0 ms-auto md:ms-0'}`}>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-24 w-full">
+        <div className={`max-w-xl lg:max-w-2xl bg-black/25 backdrop-blur-[3px] p-5 sm:p-8 rounded-3xl border border-white/20 shadow-2xl ${lang === 'ar' ? 'ms-0 me-auto md:me-0' : 'me-0 ms-auto md:ms-0'}`}>
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/95 backdrop-blur-sm text-[#3B4B59] text-xs sm:text-sm font-black shadow-md mb-5 border border-white/50 animate-pulse">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur-sm text-[#3B4B59] text-xs sm:text-sm font-black shadow-md mb-4 sm:mb-5 border border-white/50 animate-pulse">
             <Sparkles className="w-4 h-4 text-[#F9A620]" />
             <span>{t.heroBadge}</span>
           </div>
 
           {/* Main Title with GSAP letter animation for JodiMini */}
-          <div className="space-y-3">
-            <span className="block text-xl sm:text-2xl lg:text-3xl font-semibold text-[#FBF8F4]/95 drop-shadow-md">
+          <div className="space-y-2 sm:space-y-3">
+            <span className="block text-lg sm:text-2xl lg:text-3xl font-semibold text-[#FBF8F4]/95 drop-shadow-md">
               {t.heroTitlePrefix}
             </span>
 
@@ -168,7 +168,7 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
             <div
               ref={heroLettersRef}
               dir="ltr"
-              className="inline-flex items-baseline text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight filter drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)] pb-2 select-none"
+              className="inline-flex items-baseline text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight filter drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)] pb-1 sm:pb-2 select-none"
               aria-label="JodiMini"
             >
               {jodiMiniLetters.map((letter, idx) => (

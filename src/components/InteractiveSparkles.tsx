@@ -46,45 +46,59 @@ export const InteractiveSparkles: React.FC = () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas, { passive: true });
 
+    let isRunning = false;
+
+    const startLoopIfNeeded = () => {
+      if (!isRunning && particlesRef.current.length > 0) {
+        isRunning = true;
+        animFrameId.current = requestAnimationFrame(render);
+      }
+    };
+
     // Spawn burst at coordinate
-    const spawnBurst = (x: number, y: number, count = 22) => {
-      for (let i = 0; i < count; i++) {
+    const spawnBurst = (x: number, y: number, count?: number) => {
+      const isMobile = window.innerWidth < 768;
+      const actualCount = count ?? (isMobile ? 12 : 22);
+      const shapes: ('star' | 'circle' | 'sparkle')[] = ['star', 'circle', 'sparkle'];
+
+      for (let i = 0; i < actualCount; i++) {
         const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 5 + 2;
-        const shapes: ('star' | 'circle' | 'sparkle')[] = ['star', 'circle', 'sparkle'];
+        const speed = Math.random() * 4 + 2;
         particlesRef.current.push({
           x,
           y,
           vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed - 1.5,
-          size: Math.random() * 6 + 4,
+          vy: Math.sin(angle) * speed - 1.2,
+          size: Math.random() * 5 + 3,
           color: BRAND_COLORS[Math.floor(Math.random() * BRAND_COLORS.length)],
           alpha: 1,
-          decay: Math.random() * 0.025 + 0.015,
+          decay: Math.random() * 0.03 + 0.02,
           rotation: Math.random() * 360,
-          vRot: (Math.random() - 0.5) * 8,
+          vRot: (Math.random() - 0.5) * 6,
           shape: shapes[Math.floor(Math.random() * shapes.length)],
         });
       }
+      startLoopIfNeeded();
     };
 
-    // Spawn trail particles on pointer move
+    // Spawn trail particles on pointer move (desktop only for buttery mobile scroll)
     const spawnTrail = (x: number, y: number) => {
       for (let i = 0; i < 2; i++) {
         particlesRef.current.push({
-          x: x + (Math.random() - 0.5) * 10,
-          y: y + (Math.random() - 0.5) * 10,
-          vx: (Math.random() - 0.5) * 1.5,
-          vy: (Math.random() - 0.5) * 1.5 - 0.5,
-          size: Math.random() * 4 + 2,
+          x: x + (Math.random() - 0.5) * 8,
+          y: y + (Math.random() - 0.5) * 8,
+          vx: (Math.random() - 0.5) * 1.2,
+          vy: (Math.random() - 0.5) * 1.2 - 0.4,
+          size: Math.random() * 3 + 2,
           color: BRAND_COLORS[Math.floor(Math.random() * BRAND_COLORS.length)],
-          alpha: 0.9,
-          decay: Math.random() * 0.04 + 0.02,
+          alpha: 0.85,
+          decay: Math.random() * 0.05 + 0.03,
           rotation: Math.random() * 360,
-          vRot: (Math.random() - 0.5) * 5,
+          vRot: (Math.random() - 0.5) * 4,
           shape: Math.random() > 0.4 ? 'star' : 'sparkle',
         });
       }
+      startLoopIfNeeded();
     };
 
     // Draw helper for 5-pointed star
@@ -134,15 +148,20 @@ export const InteractiveSparkles: React.FC = () => {
       context.closePath();
     };
 
-    // Animation Loop
+    // On-demand Animation Loop: stops when particles reach 0
     const render = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (particlesRef.current.length === 0) {
+        isRunning = false;
+        return;
+      }
 
       for (let i = particlesRef.current.length - 1; i >= 0; i--) {
         const p = particlesRef.current[i];
         p.x += p.vx;
         p.y += p.vy;
-        p.vy += 0.08; // gravity
+        p.vy += 0.08;
         p.rotation += p.vRot;
         p.alpha -= p.decay;
 
@@ -172,29 +191,32 @@ export const InteractiveSparkles: React.FC = () => {
         ctx.restore();
       }
 
-      animFrameId.current = requestAnimationFrame(render);
+      if (particlesRef.current.length > 0) {
+        animFrameId.current = requestAnimationFrame(render);
+      } else {
+        isRunning = false;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
     };
-    render();
 
     // Global click listener for celebration burst
     const handlePointerDown = (e: MouseEvent | TouchEvent) => {
       const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
       const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
-      spawnBurst(clientX, clientY, 26);
+      spawnBurst(clientX, clientY);
     };
 
-    // Global move listener for trailing stardust
-    const handlePointerMove = (e: MouseEvent | TouchEvent) => {
-      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    // Desktop only mouse trailing to keep mobile scrolling instantaneous
+    const handleMouseMove = (e: MouseEvent) => {
+      const clientX = e.clientX;
+      const clientY = e.clientY;
 
       if (lastMovePos.current) {
         const dist = Math.hypot(
           clientX - lastMovePos.current.x,
           clientY - lastMovePos.current.y
         );
-        // Only spawn if moved sufficiently to keep performance high
-        if (dist > 18) {
+        if (dist > 24) {
           spawnTrail(clientX, clientY);
           lastMovePos.current = { x: clientX, y: clientY };
         }
@@ -205,16 +227,14 @@ export const InteractiveSparkles: React.FC = () => {
 
     window.addEventListener('mousedown', handlePointerDown);
     window.addEventListener('touchstart', handlePointerDown, { passive: true });
-    window.addEventListener('mousemove', handlePointerMove, { passive: true });
-    window.addEventListener('touchmove', handlePointerMove, { passive: true });
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
     return () => {
       if (animFrameId.current) cancelAnimationFrame(animFrameId.current);
       window.removeEventListener('resize', resizeCanvas);
       window.removeEventListener('mousedown', handlePointerDown);
       window.removeEventListener('touchstart', handlePointerDown);
-      window.removeEventListener('mousemove', handlePointerMove);
-      window.removeEventListener('touchmove', handlePointerMove);
+      window.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
 
