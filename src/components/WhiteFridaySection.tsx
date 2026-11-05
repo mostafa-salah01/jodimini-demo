@@ -59,7 +59,7 @@ export const WhiteFridaySection: React.FC<WhiteFridaySectionProps> = ({ lang }) 
       {/* Background Image with Parallax & Subtle Zoom */}
       <div className="absolute inset-0 z-0">
         <img
-          src="/images/banner-whitefriday.webp"
+          src="./images/banner-whitefriday.webp"
           alt="عروض الجمعة البيضاء للأطفال"
           className="w-full h-full object-cover object-center filter brightness-90 transform scale-105 transition-transform duration-1000"
           loading="lazy"

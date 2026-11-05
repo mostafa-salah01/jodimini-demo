@@ -62,7 +62,7 @@ export const EmbroiderySection: React.FC<EmbroiderySectionProps> = ({
             <div className="relative w-full max-w-md sm:max-w-lg aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-white group">
               {/* Base Image */}
               <img
-                src="/images/embroidery-base.webp"
+                src="./images/embroidery-base.webp"
                 alt="قطعة ملابس أطفال لتخصيص التطريز"
                 className="w-full h-full object-cover object-center select-none"
                 loading="lazy"

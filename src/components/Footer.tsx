@@ -19,7 +19,7 @@ export const Footer: React.FC<FooterProps> = ({ lang }) => {
             <div className="flex items-center gap-2">
               <div className="w-12 h-12 rounded-2xl bg-white p-1.5 flex items-center justify-center">
                 <img
-                  src="/images/logo.png"
+                  src="./images/logo.png"
                   alt="JodiMini Logo"
                   className="w-full h-full object-contain"
                   width="48"

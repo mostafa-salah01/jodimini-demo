@@ -27,7 +27,7 @@ export const PRODUCTS: Product[] = [
       en: 'Best Seller',
       color: '#F497A9',
     },
-    image: '/images/product-01.webp',
+    image: './images/product-01.webp',
     sizes: ['4 سنوات', '5 سنوات', '6 سنوات'],
     fabric: {
       ar: '100% قطن عضوي منسوج',
@@ -64,7 +64,7 @@ export const PRODUCTS: Product[] = [
       en: 'New Arrival',
       color: '#F26B4E',
     },
-    image: '/images/product-02.webp',
+    image: './images/product-02.webp',
     sizes: ['4 سنوات', '5 سنوات', '6 سنوات'],
     fabric: {
       ar: '95% قطن ممشط، 5% إيلاستين',
@@ -101,7 +101,7 @@ export const PRODUCTS: Product[] = [
       en: '2-Piece Set',
       color: '#20969B',
     },
-    image: '/images/product-03.webp',
+    image: './images/product-03.webp',
     sizes: ['4 سنوات', '5 سنوات', '6 سنوات'],
     fabric: {
       ar: '100% قطن جيرسي خفيف وناعم',
@@ -139,7 +139,7 @@ export const PRODUCTS: Product[] = [
       en: '18% OFF',
       color: '#F9A620',
     },
-    image: '/images/product-04.webp',
+    image: './images/product-04.webp',
     sizes: ['7 سنوات', '8 سنوات', '9 سنوات'],
     fabric: {
       ar: '80% قطن فليس، 20% بوليستر مدعم',
@@ -176,7 +176,7 @@ export const PRODUCTS: Product[] = [
       en: 'Occasion Luxury',
       color: '#20969B',
     },
-    image: '/images/product-05.webp',
+    image: './images/product-05.webp',
     sizes: ['4 سنوات', '5 سنوات', '6 سنوات'],
     fabric: {
       ar: 'تول ناعم مضاعف مع بطانة قطن 100%',
@@ -213,7 +213,7 @@ export const PRODUCTS: Product[] = [
       en: 'Smart Set',
       color: '#3B4B59',
     },
-    image: '/images/product-06.webp',
+    image: './images/product-06.webp',
     sizes: ['7 سنوات', '8 سنوات', '9 سنوات'],
     fabric: {
       ar: 'تيشيرت قطن 100%، شورت قطن تويل فاخر',
@@ -250,7 +250,7 @@ export const PRODUCTS: Product[] = [
       en: 'Trending',
       color: '#F497A9',
     },
-    image: '/images/product-07.webp',
+    image: './images/product-07.webp',
     sizes: ['10 سنوات', '11 سنة', '12 سنة'],
     fabric: {
       ar: '85% قطن، 15% بوليستر، جينز ستريتش مرن',
@@ -287,7 +287,7 @@ export const PRODUCTS: Product[] = [
       en: 'Baby First',
       color: '#F9A620',
     },
-    image: '/images/product-08.webp',
+    image: './images/product-08.webp',
     sizes: ['0-3 شهور', '3-6 شهور', '6-9 شهور', '9-12 شهر'],
     fabric: {
       ar: '100% قطن عضوي ناعم معتمد OEKO-TEX',
@@ -324,7 +324,7 @@ export const PRODUCTS: Product[] = [
       en: 'Timeless Classic',
       color: '#3B4B59',
     },
-    image: '/images/product-09.webp',
+    image: './images/product-09.webp',
     sizes: ['1 سنة', '2 سنة', '3 سنوات'],
     fabric: {
       ar: 'مزيج قطن وبوليفيسكوز فائق النعومة',

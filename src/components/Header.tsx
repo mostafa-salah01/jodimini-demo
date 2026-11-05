@@ -59,7 +59,7 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <div className="relative w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center p-1.5 border border-[#20969B]/20">
               <img
-                src="/images/logo.png"
+                src="./images/logo.png"
                 alt="JodiMini Logo"
                 className="w-full h-full object-contain"
                 width="48"
