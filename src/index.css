@@ -62,6 +62,63 @@
   animation-play-state: paused;
 }
 
+/* Scroll Slide-in Animations from Right and Left */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(45px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-45px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes popSurprise {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-slide-right {
+  animation: slideInRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-slide-left {
+  animation: slideInLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-pop-surprise {
+  animation: popSurprise 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* Perfect mobile responsiveness - prevent accidental horizontal scroll */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+  touch-action: pan-y pinch-zoom;
+}
+
 /* Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   *,

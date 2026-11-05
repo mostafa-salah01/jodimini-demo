@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ArrowDown, Sparkles } from 'lucide-react';
 import { Language } from '../types';
 import { TRANSLATIONS } from '../data/translations';
+import { HandwritingTitle } from './HandwritingTitle';
 
 interface HeroProps {
   lang: Language;
@@ -158,7 +159,11 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
             </div>
 
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-relaxed">
-              {lang === 'ar' ? 'بريق الطفولة، وأناقة تصنع ذكريات لا تُنسى' : 'Joyful Childhood, Timeless Elegance'}
+              <HandwritingTitle
+                text={lang === 'ar' ? 'بريق الطفولة، وأناقة تصنع ذكريات لا تُنسى ✨' : 'Joyful Childhood, Timeless Elegance ✨'}
+                penColor="#F9A620"
+                speedMs={40}
+              />
             </h1>
           </div>
 
