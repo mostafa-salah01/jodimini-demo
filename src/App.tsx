@@ -19,7 +19,7 @@ import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { AgeCategory, BundleItem, CartItem, Language, Product } from './types';
 import { PRODUCTS } from './data/products';
 import { TRANSLATIONS } from './data/translations';
-import { Check, Sparkles } from 'lucide-react';
+import { Check, Sparkles, Smartphone } from 'lucide-react';
 
 export const App: React.FC = () => {
   // 1) Language state: default Arabic (RTL)
@@ -76,8 +76,13 @@ export const App: React.FC = () => {
     setTimeout(() => setToastMessage(null), 3000);
   };
 
+  // Tracking state for user actions
+  const [viewedProductsCount, setViewedProductsCount] = useState(0);
+  const [showFloatingInstallBadge, setShowFloatingInstallBadge] = useState(false);
+
   // Trigger Smart App sheet once per session
   const triggerSmartApp = () => {
+    setShowFloatingInstallBadge(true);
     const alreadyShown = sessionStorage.getItem('jodimini_smart_app_shown');
     if (!alreadyShown && !hasShownSmartApp) {
       setIsSmartAppOpen(true);
@@ -86,18 +91,26 @@ export const App: React.FC = () => {
     }
   };
 
-  // Timer for 25 seconds trigger
+  // Timer trigger: 7 seconds of browsing as requested by user
   useEffect(() => {
     const timer = setTimeout(() => {
+      setShowFloatingInstallBadge(true);
       triggerSmartApp();
-    }, 25000);
+    }, 7000);
     return () => clearTimeout(timer);
   }, [hasShownSmartApp]);
 
-  // Open Quick View
+  // Open Quick View & track viewed products
   const handleOpenQuickView = (product: Product) => {
     setQuickViewProduct(product);
-    triggerSmartApp(); // Trigger on first quick view
+    setViewedProductsCount((prev) => {
+      const next = prev + 1;
+      // Trigger if customer views 1 or 2 products
+      if (next >= 2) {
+        triggerSmartApp();
+      }
+      return next;
+    });
   };
 
   // Add product from Quick View
@@ -218,6 +231,7 @@ export const App: React.FC = () => {
         onToggleLang={toggleLanguage}
         cartCount={cartItems.reduce((sum, item) => sum + item.quantity, 0)}
         onOpenCart={() => setIsCartOpen(true)}
+        onOpenSmartApp={() => setIsSmartAppOpen(true)}
       />
 
       {/* Main Page Flow */}
@@ -296,6 +310,28 @@ export const App: React.FC = () => {
 
       {/* 12. Floating WhatsApp button */}
       <FloatingWhatsApp lang={lang} />
+
+      {/* 12.5 Floating Smart App Install Badge (Appears after 7s or user interaction) */}
+      {showFloatingInstallBadge && (
+        <aside
+          aria-label="Smart App Install"
+          className="fixed bottom-6 end-6 z-40 animate-in fade-in slide-in-from-bottom-5 duration-300"
+        >
+          <button
+            type="button"
+            onClick={() => setIsSmartAppOpen(true)}
+            className="flex items-center gap-2.5 px-4 py-3 rounded-full bg-gradient-to-r from-[#20969B] to-[#F26B4E] hover:from-[#F26B4E] hover:to-[#20969B] text-white font-extrabold text-xs sm:text-sm shadow-2xl hover:shadow-[#F26B4E]/40 border-2 border-white transition-all transform hover:scale-105 active:scale-95 group focus:outline-none focus:ring-4 focus:ring-[#20969B]/40"
+          >
+            <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+              <Smartphone className="w-3.5 h-3.5 text-white animate-pulse" />
+            </div>
+            <span>
+              {lang === 'ar' ? 'حمّلي التطبيق (آيفون وأندرويد)' : 'Install App (iOS & Android)'}
+            </span>
+            <span className="w-2 h-2 rounded-full bg-[#F9A620] animate-ping" />
+          </button>
+        </aside>
+      )}
 
       {/* 13. Modals and Drawers */}
       <QuickViewModal

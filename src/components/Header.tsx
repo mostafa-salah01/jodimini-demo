@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShoppingBag, Globe, Menu, X } from 'lucide-react';
+import { ShoppingBag, Globe, Menu, X, Smartphone } from 'lucide-react';
 import { Language } from '../types';
 import { TRANSLATIONS } from '../data/translations';
 
@@ -8,6 +8,7 @@ interface HeaderProps {
   onToggleLang: () => void;
   cartCount: number;
   onOpenCart: () => void;
+  onOpenSmartApp: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -15,6 +16,7 @@ export const Header: React.FC<HeaderProps> = ({
   onToggleLang,
   cartCount,
   onOpenCart,
+  onOpenSmartApp,
 }) => {
   const t = TRANSLATIONS[lang];
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -89,8 +91,21 @@ export const Header: React.FC<HeaderProps> = ({
           ))}
         </nav>
 
-        {/* Action Controls: Language Toggle & Cart */}
+        {/* Action Controls: Smart App Install, Language Toggle & Cart */}
         <div className="flex items-center gap-2 sm:gap-3">
+          {/* Smart App Install Button (Android & iPhone) */}
+          <button
+            type="button"
+            onClick={onOpenSmartApp}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-black text-white bg-gradient-to-r from-[#20969B] to-[#3B4B59] hover:from-[#F26B4E] hover:to-[#F26B4E] shadow-xs hover:shadow-md transition-all active:scale-95 group"
+            title={lang === 'ar' ? 'تحميل تطبيق JodiMini على هاتفك' : 'Install JodiMini App'}
+          >
+            <Smartphone className="w-3.5 h-3.5 text-[#F9A620] group-hover:text-white transition-colors" />
+            <span className="hidden xs:inline">
+              {lang === 'ar' ? 'حمّلي التطبيق' : 'Install App'}
+            </span>
+          </button>
+
           {/* Language Switch */}
           <button
             type="button"
@@ -132,6 +147,20 @@ export const Header: React.FC<HeaderProps> = ({
               <span className="text-[#20969B] text-lg">›</span>
             </button>
           ))}
+          <button
+            type="button"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              onOpenSmartApp();
+            }}
+            className="w-full text-start px-4 py-3 text-base font-bold text-white bg-gradient-to-r from-[#20969B] to-[#F26B4E] rounded-xl transition-all flex items-center justify-between shadow-xs mt-2"
+          >
+            <div className="flex items-center gap-2">
+              <Smartphone className="w-5 h-5 text-white" />
+              <span>{lang === 'ar' ? 'حمّلي تطبيق JodiMini (آيفون وأندرويد)' : 'Install JodiMini App (iOS & Android)'}</span>
+            </div>
+            <span className="text-white text-lg">★</span>
+          </button>
         </div>
       )}
     </header>
