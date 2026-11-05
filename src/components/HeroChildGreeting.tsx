@@ -12,21 +12,22 @@ export const HeroChildGreeting: React.FC<HeroChildGreetingProps> = () => {
   stageRef.current = stage;
 
   useEffect(() => {
-    // 1. Slide in immediately on mount and start waving
+    // 1. Slide in smoothly on mount and start waving
     const enterTimer = setTimeout(() => {
       setStage('waving');
-    }, 300);
+    }, 400);
 
-    // 2. Stay for 30 seconds while user is looking, then smoothly exit
+    // 2. Stay for 12s on mobile or 18s on desktop so visitor has plenty of time to enjoy
+    const isMobile = window.innerWidth < 768;
     const autoExitTimer = setTimeout(() => {
       if (stageRef.current === 'waving') {
         triggerExit();
       }
-    }, 30000);
+    }, isMobile ? 12000 : 18000);
 
-    // 3. Dismiss as soon as user starts scrolling down the page
+    // 3. Dismiss only after visitor has scrolled past the hero section
     const handleScroll = () => {
-      if (window.scrollY > 100 && stageRef.current === 'waving') {
+      if (window.scrollY > 260 && stageRef.current === 'waving') {
         triggerExit();
       }
     };

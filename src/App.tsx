@@ -21,6 +21,7 @@ import { AgeCategory, BundleItem, CartItem, Language, Product } from './types';
 import { PRODUCTS } from './data/products';
 import { TRANSLATIONS } from './data/translations';
 import { Check, Sparkles, Smartphone } from 'lucide-react';
+import { usePWAInstall } from './hooks/usePWAInstall';
 
 export const App: React.FC = () => {
   // 1) Language state: default Arabic (RTL)
@@ -37,6 +38,9 @@ export const App: React.FC = () => {
   };
 
   const t = TRANSLATIONS[lang];
+
+  // PWA Install State & Detection
+  const { isInstalled, isInstallable, isIOS, install, markAsInstalled } = usePWAInstall();
 
   // 2) Age Filter State
   const [selectedAge, setSelectedAge] = useState<AgeCategory>('all');
@@ -65,7 +69,7 @@ export const App: React.FC = () => {
   const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
-  // 5) Smart App Bottom Sheet State (shown once per session)
+  // 5) Smart App Bottom Sheet State (shown once per session, ONLY if NOT installed)
   const [isSmartAppOpen, setIsSmartAppOpen] = useState(false);
   const [hasShownSmartApp, setHasShownSmartApp] = useState(false);
 
@@ -81,8 +85,9 @@ export const App: React.FC = () => {
   const [viewedProductsCount, setViewedProductsCount] = useState(0);
   const [showFloatingInstallBadge, setShowFloatingInstallBadge] = useState(false);
 
-  // Trigger Smart App sheet once per session
+  // Trigger Smart App sheet once per session (strictly guarded against already installed)
   const triggerSmartApp = () => {
+    if (isInstalled) return;
     setShowFloatingInstallBadge(true);
     const alreadyShown = sessionStorage.getItem('jodimini_smart_app_shown');
     if (!alreadyShown && !hasShownSmartApp) {
@@ -92,14 +97,31 @@ export const App: React.FC = () => {
     }
   };
 
-  // Timer trigger: 7 seconds of browsing as requested by user
+  // Direct 1-Click Install or Open Quick Sheet
+  const handleOpenSmartApp = async () => {
+    if (isInstalled) return;
+    if (!isIOS && isInstallable) {
+      const accepted = await install();
+      if (accepted) {
+        markAsInstalled();
+        showToast(lang === 'ar' ? 'تم تثبيت تطبيق JodiMini على جهازك! 🎉' : 'JodiMini app installed! 🎉');
+        return;
+      }
+    }
+    setIsSmartAppOpen(true);
+  };
+
+  // Timer trigger: 7 seconds of browsing as requested by user (only if NOT installed)
   useEffect(() => {
+    if (isInstalled) return;
     const timer = setTimeout(() => {
-      setShowFloatingInstallBadge(true);
-      triggerSmartApp();
+      if (!isInstalled) {
+        setShowFloatingInstallBadge(true);
+        triggerSmartApp();
+      }
     }, 7000);
     return () => clearTimeout(timer);
-  }, [hasShownSmartApp]);
+  }, [isInstalled]);
 
   // Open Quick View & track viewed products
   const handleOpenQuickView = (product: Product) => {
@@ -232,7 +254,8 @@ export const App: React.FC = () => {
         onToggleLang={toggleLanguage}
         cartCount={cartItems.reduce((sum, item) => sum + item.quantity, 0)}
         onOpenCart={() => setIsCartOpen(true)}
-        onOpenSmartApp={() => setIsSmartAppOpen(true)}
+        onOpenSmartApp={handleOpenSmartApp}
+        isInstalled={isInstalled}
       />
 
       {/* Main Page Flow */}
@@ -320,15 +343,15 @@ export const App: React.FC = () => {
       {/* 12.1 Interactive Sparkles (Touch/Cursor trails & Click Starburst Explosion) */}
       <InteractiveSparkles />
 
-      {/* 12.5 Floating Smart App Install Badge (Appears after 7s or user interaction) */}
-      {showFloatingInstallBadge && (
+      {/* 12.5 Floating Smart App Install Badge (Only shown if NOT installed) */}
+      {!isInstalled && showFloatingInstallBadge && (
         <aside
           aria-label="Smart App Install"
           className="fixed bottom-4 sm:bottom-6 end-3 sm:end-6 z-40 animate-in fade-in slide-in-from-bottom-5 duration-300"
         >
           <button
             type="button"
-            onClick={() => setIsSmartAppOpen(true)}
+            onClick={handleOpenSmartApp}
             className="flex items-center gap-1.5 sm:gap-2.5 px-3 py-2 sm:px-4 sm:py-3 rounded-full bg-gradient-to-r from-[#20969B] to-[#F26B4E] hover:from-[#F26B4E] hover:to-[#20969B] text-white font-extrabold text-xs sm:text-sm shadow-xl hover:shadow-[#F26B4E]/40 border-2 border-white transition-all transform hover:scale-105 active:scale-95 group focus:outline-none focus:ring-4 focus:ring-[#20969B]/40 cursor-pointer"
           >
             <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/20 flex items-center justify-center shrink-0">
@@ -381,11 +404,12 @@ export const App: React.FC = () => {
         onCompleteSuccess={() => setCartItems([])}
       />
 
-      {/* 14. Smart App Install Bottom Sheet (Appears once per session) */}
+      {/* 14. Smart App Install Bottom Sheet (Only if NOT installed) */}
       <SmartAppSheet
-        isOpen={isSmartAppOpen}
+        isOpen={!isInstalled && isSmartAppOpen}
         onClose={() => setIsSmartAppOpen(false)}
         lang={lang}
+        onInstalled={markAsInstalled}
       />
 
       {/* Toast Notification */}

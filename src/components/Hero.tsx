@@ -14,15 +14,19 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
   const t = TRANSLATIONS[lang];
   const videoRef = useRef<HTMLVideoElement>(null);
   const heroLettersRef = useRef<HTMLDivElement>(null);
-  const [shouldPlayVideo, setShouldPlayVideo] = useState(true);
+  const [shouldPlayVideo, setShouldPlayVideo] = useState(false);
 
-  // Check user preferences for motion and data saving, and trigger autoplay
+  // Check user preferences for mobile, motion and data saving
   useEffect(() => {
+    const isMobile =
+      window.innerWidth < 768 ||
+      'ontouchstart' in window ||
+      navigator.maxTouchPoints > 0;
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const nav = navigator as unknown as { connection?: { saveData?: boolean } };
     const saveData = nav.connection?.saveData === true;
 
-    if (prefersReducedMotion || saveData) {
+    if (isMobile || prefersReducedMotion || saveData) {
       setShouldPlayVideo(false);
     } else {
       setShouldPlayVideo(true);

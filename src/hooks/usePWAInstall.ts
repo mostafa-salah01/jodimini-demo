@@ -7,20 +7,35 @@ interface BeforeInstallPromptEvent extends Event {
 
 export function usePWAInstall() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
-  const [isInstalled, setIsInstalled] = useState(false);
+
+  // Check if app is running in standalone PWA mode or was already marked installed
+  const checkIsInstalled = () => {
+    if (typeof window === 'undefined') return false;
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+    const isIOSStandalone = (window.navigator as unknown as { standalone?: boolean }).standalone === true;
+    const isAndroidReferrer = typeof document !== 'undefined' && document.referrer.includes('android-app://');
+    const isLocallyInstalled = localStorage.getItem('jodimini_app_installed') === 'true';
+
+    return isStandalone || isIOSStandalone || isAndroidReferrer || isLocallyInstalled;
+  };
+
+  const [isInstalled, setIsInstalled] = useState<boolean>(checkIsInstalled);
   const [isIOS, setIsIOS] = useState(false);
   const [isAndroid, setIsAndroid] = useState(false);
 
+  const markAsInstalled = () => {
+    setIsInstalled(true);
+    localStorage.setItem('jodimini_app_installed', 'true');
+    setDeferredPrompt(null);
+  };
+
   useEffect(() => {
-    // Detect standalone mode (already installed)
-    const isStandalone =
-      window.matchMedia('(display-mode: standalone)').matches ||
-      (window.navigator as unknown as { standalone?: boolean }).standalone === true;
-    setIsInstalled(isStandalone);
+    setIsInstalled(checkIsInstalled());
 
     // Detect OS
     const userAgent = window.navigator.userAgent.toLowerCase();
-    const isIOSDevice = /iphone|ipad|ipod/.test(userAgent) || 
+    const isIOSDevice =
+      /iphone|ipad|ipod/.test(userAgent) ||
       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     const isAndroidDevice = /android/.test(userAgent);
 
@@ -33,31 +48,44 @@ export function usePWAInstall() {
     };
 
     const handleAppInstalled = () => {
-      setIsInstalled(true);
-      setDeferredPrompt(null);
+      markAsInstalled();
+    };
+
+    // Listen for standalone display-mode changes
+    const matchMediaStandalone = window.matchMedia('(display-mode: standalone)');
+    const handleDisplayModeChange = (e: MediaQueryListEvent) => {
+      if (e.matches) {
+        markAsInstalled();
+      }
     };
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     window.addEventListener('appinstalled', handleAppInstalled);
+    if (matchMediaStandalone.addEventListener) {
+      matchMediaStandalone.addEventListener('change', handleDisplayModeChange);
+    }
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
       window.removeEventListener('appinstalled', handleAppInstalled);
+      if (matchMediaStandalone.removeEventListener) {
+        matchMediaStandalone.removeEventListener('change', handleDisplayModeChange);
+      }
     };
   }, []);
 
   const install = async () => {
-    if (!deferredPrompt) return false;
-    try {
-      await deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') {
-        setIsInstalled(true);
-        setDeferredPrompt(null);
-        return true;
+    if (deferredPrompt) {
+      try {
+        await deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          markAsInstalled();
+          return true;
+        }
+      } catch (err) {
+        console.warn('Install prompt error:', err);
       }
-    } catch (err) {
-      console.warn('Install prompt error:', err);
     }
     return false;
   };
@@ -68,5 +96,6 @@ export function usePWAInstall() {
     isIOS,
     isAndroid,
     install,
+    markAsInstalled,
   };
 }

@@ -9,6 +9,7 @@ interface HeaderProps {
   cartCount: number;
   onOpenCart: () => void;
   onOpenSmartApp: () => void;
+  isInstalled?: boolean;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -17,6 +18,7 @@ export const Header: React.FC<HeaderProps> = ({
   cartCount,
   onOpenCart,
   onOpenSmartApp,
+  isInstalled = false,
 }) => {
   const t = TRANSLATIONS[lang];
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -100,19 +102,21 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Action Controls: Smart App Install, Icon Language Toggle & Cart */}
         <div className="flex items-center gap-1.5 sm:gap-2.5">
-          {/* Smart App Install Button (Android & iPhone) */}
-          <button
-            type="button"
-            onClick={onOpenSmartApp}
-            className="flex items-center gap-1.5 p-2 sm:px-3 sm:py-1.5 rounded-xl sm:rounded-full text-xs font-black text-white bg-gradient-to-r from-[#20969B] to-[#F26B4E] hover:from-[#F26B4E] hover:to-[#20969B] shadow-xs hover:shadow-md transition-all active:scale-95 group shrink-0"
-            title={lang === 'ar' ? 'تحميل تطبيق JodiMini على هاتفك' : 'Install JodiMini App'}
-            aria-label={lang === 'ar' ? 'تحميل تطبيق JodiMini على هاتفك' : 'Install JodiMini App'}
-          >
-            <Smartphone className="w-4 h-4 text-white group-hover:rotate-12 transition-transform shrink-0" />
-            <span className="hidden sm:inline">
-              {lang === 'ar' ? 'حمّلي التطبيق' : 'Install App'}
-            </span>
-          </button>
+          {/* Smart App Install Button (Android & iPhone) - hidden if already installed */}
+          {!isInstalled && (
+            <button
+              type="button"
+              onClick={onOpenSmartApp}
+              className="flex items-center gap-1.5 p-2 sm:px-3 sm:py-1.5 rounded-xl sm:rounded-full text-xs font-black text-white bg-gradient-to-r from-[#20969B] to-[#F26B4E] hover:from-[#F26B4E] hover:to-[#20969B] shadow-xs hover:shadow-md transition-all active:scale-95 group shrink-0"
+              title={lang === 'ar' ? 'تحميل تطبيق JodiMini على هاتفك' : 'Install JodiMini App'}
+              aria-label={lang === 'ar' ? 'تحميل تطبيق JodiMini على هاتفك' : 'Install JodiMini App'}
+            >
+              <Smartphone className="w-4 h-4 text-white group-hover:rotate-12 transition-transform shrink-0" />
+              <span className="hidden sm:inline">
+                {lang === 'ar' ? 'حمّلي التطبيق' : 'Install App'}
+              </span>
+            </button>
+          )}
 
           {/* Icon-based Language Switcher: Toggle between Arabic & English */}
           <button
@@ -194,20 +198,22 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           </div>
 
-          <button
-            type="button"
-            onClick={() => {
-              setMobileMenuOpen(false);
-              onOpenSmartApp();
-            }}
-            className="w-full text-start px-4 py-3 text-base font-bold text-white bg-gradient-to-r from-[#20969B] to-[#F26B4E] rounded-xl transition-all flex items-center justify-between shadow-xs mt-2"
-          >
-            <div className="flex items-center gap-2">
-              <Smartphone className="w-5 h-5 text-white" />
-              <span>{lang === 'ar' ? 'حمّلي تطبيق JodiMini (آيفون وأندرويد)' : 'Install JodiMini App (iOS & Android)'}</span>
-            </div>
-            <span className="text-white text-lg">★</span>
-          </button>
+          {!isInstalled && (
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenSmartApp();
+              }}
+              className="w-full text-start px-4 py-3 text-base font-bold text-white bg-gradient-to-r from-[#20969B] to-[#F26B4E] rounded-xl transition-all flex items-center justify-between shadow-xs mt-2"
+            >
+              <div className="flex items-center gap-2">
+                <Smartphone className="w-5 h-5 text-white" />
+                <span>{lang === 'ar' ? 'حمّلي تطبيق JodiMini (آيفون وأندرويد)' : 'Install JodiMini App (iOS & Android)'}</span>
+              </div>
+              <span className="text-white text-lg">★</span>
+            </button>
+          )}
         </div>
       )}
     </header>

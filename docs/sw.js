@@ -81,67 +81,67 @@ define(['./workbox-7e5eb42b'], (function (workbox) { 'use strict';
     "revision": "402b66900e731ca748771b6fc5e7a068"
   }, {
     "url": "pwa-512x512.png",
-    "revision": "d409ec98a3b63508e19fb49d96c8bbe6"
+    "revision": "17b884fc05f54d79adf01ec49ba5b621"
   }, {
     "url": "pwa-192x192.png",
-    "revision": "d409ec98a3b63508e19fb49d96c8bbe6"
+    "revision": "79f8fc9f1f9d2b4e70104ffef6f2d326"
   }, {
     "url": "index.html",
-    "revision": "d20603e141d7f6232955a7bb0eeb3ceb"
+    "revision": "c6944f47e56e0dab51845a47c1e4fe52"
   }, {
     "url": "favicon.png",
-    "revision": "d409ec98a3b63508e19fb49d96c8bbe6"
+    "revision": "cdeaa83b4ea6463a4d0041d5ea8ad5b9"
   }, {
     "url": "apple-touch-icon.png",
-    "revision": "d409ec98a3b63508e19fb49d96c8bbe6"
+    "revision": "8cbdc931bb8c22fc2f4a37691a63bc18"
   }, {
     "url": "images/real-child-waving.png",
-    "revision": "f99600544cb943281381536989fce2df"
+    "revision": "1b8fcb9aac307d569e00f4c53f511b95"
   }, {
     "url": "images/product-09.webp",
-    "revision": "d590b077f631beab2ba6ddb004dc9df9"
+    "revision": "0b9b8f21696f6f87a867401f10d5aea0"
   }, {
     "url": "images/product-08.webp",
-    "revision": "6040c4899bab1e7e813a993e7608964f"
+    "revision": "a72bf346ca6bed6255e63ce79dccd73d"
   }, {
     "url": "images/product-07.webp",
-    "revision": "a075f2b53eec035da6625b9bc0d75c4e"
+    "revision": "131961b6e9acc8000158d97e583647b2"
   }, {
     "url": "images/product-06.webp",
-    "revision": "7bb59ac6ba736c0f8edd991713c50f97"
+    "revision": "986f422c2a3d69a1fef0d7acb0f5fca9"
   }, {
     "url": "images/product-05.webp",
-    "revision": "48b4c2a817022b89df46b7cdbb15631b"
+    "revision": "ba298e93a4c88f4443d16f0f8e9c7c8e"
   }, {
     "url": "images/product-04.webp",
-    "revision": "5a11212a178a341a87ae3a633a9e36c5"
+    "revision": "1ef027a7b4d7fe152d0baeda02b0d78c"
   }, {
     "url": "images/product-03.webp",
-    "revision": "a309f46c1e6bba1969f30d12a6778d46"
+    "revision": "28e95eb5db676a4ca28ce87097985b74"
   }, {
     "url": "images/product-02.webp",
-    "revision": "03dc2d1384b064c8537edfae9e3d058e"
+    "revision": "c66f8c8420d10d4021f8febe7f1ad118"
   }, {
     "url": "images/product-01.webp",
-    "revision": "7bee6fe86fa640b465591af4c20d24d1"
+    "revision": "deece240160664b0ba7eff553d32108b"
   }, {
     "url": "images/mascot.png",
-    "revision": "9168d34d8172b04977bede1245ba02e3"
+    "revision": "c12f74c099f4a3c03a8b9e6e49079c1a"
   }, {
     "url": "images/logo.png",
-    "revision": "d409ec98a3b63508e19fb49d96c8bbe6"
+    "revision": "aee2fe8c9119934c2f78b71fa0ec1d01"
   }, {
     "url": "images/logo-green.png",
     "revision": "d409ec98a3b63508e19fb49d96c8bbe6"
   }, {
     "url": "images/hero-poster.webp",
-    "revision": "f8e3fa6fe7ef065fc4dee55a265dcbcc"
+    "revision": "2fe2669e8cb97f2600863fe468eb60fd"
   }, {
     "url": "images/embroidery-base.webp",
-    "revision": "54e816308975a450e3a8d9bbfe436fe5"
+    "revision": "7623cfaa07a96835316a01aef310ee92"
   }, {
     "url": "images/banner-whitefriday.webp",
-    "revision": "2f9af9219df7c607ff94bff2d9799194"
+    "revision": "04547119427a1351f58cc7e3936bf458"
   }, {
     "url": "assets/style.css",
     "revision": null
@@ -171,76 +171,76 @@ define(['./workbox-7e5eb42b'], (function (workbox) { 'use strict';
     "revision": null
   }, {
     "url": "apple-touch-icon.png",
-    "revision": "d409ec98a3b63508e19fb49d96c8bbe6"
+    "revision": "8cbdc931bb8c22fc2f4a37691a63bc18"
   }, {
     "url": "favicon.png",
-    "revision": "d409ec98a3b63508e19fb49d96c8bbe6"
+    "revision": "cdeaa83b4ea6463a4d0041d5ea8ad5b9"
   }, {
     "url": "pwa-192x192.png",
-    "revision": "d409ec98a3b63508e19fb49d96c8bbe6"
+    "revision": "79f8fc9f1f9d2b4e70104ffef6f2d326"
   }, {
     "url": "pwa-512x512.png",
-    "revision": "d409ec98a3b63508e19fb49d96c8bbe6"
+    "revision": "17b884fc05f54d79adf01ec49ba5b621"
   }, {
     "url": "images/banner-whitefriday.webp",
-    "revision": "2f9af9219df7c607ff94bff2d9799194"
+    "revision": "04547119427a1351f58cc7e3936bf458"
   }, {
     "url": "images/embroidery-base.webp",
-    "revision": "54e816308975a450e3a8d9bbfe436fe5"
+    "revision": "7623cfaa07a96835316a01aef310ee92"
   }, {
     "url": "images/hero-poster.webp",
-    "revision": "f8e3fa6fe7ef065fc4dee55a265dcbcc"
+    "revision": "2fe2669e8cb97f2600863fe468eb60fd"
   }, {
     "url": "images/logo-green.png",
     "revision": "d409ec98a3b63508e19fb49d96c8bbe6"
   }, {
     "url": "images/logo.png",
-    "revision": "d409ec98a3b63508e19fb49d96c8bbe6"
+    "revision": "aee2fe8c9119934c2f78b71fa0ec1d01"
   }, {
     "url": "images/mascot.jpg",
-    "revision": "9168d34d8172b04977bede1245ba02e3"
+    "revision": "2cd0c40362bf551d72c49bcfe241737c"
   }, {
     "url": "images/mascot.png",
-    "revision": "9168d34d8172b04977bede1245ba02e3"
+    "revision": "c12f74c099f4a3c03a8b9e6e49079c1a"
   }, {
     "url": "images/og-image.jpg",
-    "revision": "23e28f338b3387f36b264ac65176ba8a"
+    "revision": "d7a11461901a53f7f901293cd03a8f13"
   }, {
     "url": "images/product-01.webp",
-    "revision": "7bee6fe86fa640b465591af4c20d24d1"
+    "revision": "deece240160664b0ba7eff553d32108b"
   }, {
     "url": "images/product-02.webp",
-    "revision": "03dc2d1384b064c8537edfae9e3d058e"
+    "revision": "c66f8c8420d10d4021f8febe7f1ad118"
   }, {
     "url": "images/product-03.webp",
-    "revision": "a309f46c1e6bba1969f30d12a6778d46"
+    "revision": "28e95eb5db676a4ca28ce87097985b74"
   }, {
     "url": "images/product-04.webp",
-    "revision": "5a11212a178a341a87ae3a633a9e36c5"
+    "revision": "1ef027a7b4d7fe152d0baeda02b0d78c"
   }, {
     "url": "images/product-05.webp",
-    "revision": "48b4c2a817022b89df46b7cdbb15631b"
+    "revision": "ba298e93a4c88f4443d16f0f8e9c7c8e"
   }, {
     "url": "images/product-06.webp",
-    "revision": "7bb59ac6ba736c0f8edd991713c50f97"
+    "revision": "986f422c2a3d69a1fef0d7acb0f5fca9"
   }, {
     "url": "images/product-07.webp",
-    "revision": "a075f2b53eec035da6625b9bc0d75c4e"
+    "revision": "131961b6e9acc8000158d97e583647b2"
   }, {
     "url": "images/product-08.webp",
-    "revision": "6040c4899bab1e7e813a993e7608964f"
+    "revision": "a72bf346ca6bed6255e63ce79dccd73d"
   }, {
     "url": "images/product-09.webp",
-    "revision": "d590b077f631beab2ba6ddb004dc9df9"
+    "revision": "0b9b8f21696f6f87a867401f10d5aea0"
   }, {
     "url": "images/real-child-waving.jpg",
     "revision": "40f75802e0faedbdbafb75f63151208e"
   }, {
     "url": "images/real-child-waving.png",
-    "revision": "f99600544cb943281381536989fce2df"
+    "revision": "1b8fcb9aac307d569e00f4c53f511b95"
   }, {
     "url": "videos/hero-video.mp4",
-    "revision": "a889f961a265a183328e414dd8583bb1"
+    "revision": "3710e045c6a0cef3f7b0da901e451654"
   }, {
     "url": "manifest.webmanifest",
     "revision": "bc82d9a703cb52f9f6d00294e4dc311b"

@@ -14,10 +14,19 @@ export const HandwritingTitle: React.FC<HandwritingTitleProps> = ({
   penColor = '#F26B4E',
   speedMs = 45,
 }) => {
-  const [displayedText, setDisplayedText] = useState('');
-  const [isWriting, setIsWriting] = useState(true);
+  const [displayedText, setDisplayedText] = useState(text);
+  const [isWriting, setIsWriting] = useState(false);
 
   useEffect(() => {
+    const isMobile = window.innerWidth < 768 || 'ontouchstart' in window;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (isMobile || prefersReducedMotion) {
+      setDisplayedText(text);
+      setIsWriting(false);
+      return;
+    }
+
     setDisplayedText('');
     setIsWriting(true);
 
@@ -28,7 +37,7 @@ export const HandwritingTitle: React.FC<HandwritingTitleProps> = ({
         setDisplayedText(text.slice(0, index));
       } else {
         clearInterval(interval);
-        setTimeout(() => setIsWriting(false), 800);
+        setTimeout(() => setIsWriting(false), 500);
       }
     }, speedMs);
 

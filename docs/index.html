@@ -6,28 +6,28 @@
     <meta name="theme-color" content="#3B4B59" />
 
     <!-- SEO Meta Tags -->
-    <title>JodiMini | متجر ملابس أطفال سعودي - بريق الطفولة وأناقة التفاصيل</title>
+    <title>JodiMini - متجر ملابس أطفال سعودي</title>
     <meta
       name="description"
-      content="تسوقي أرقى أزياء وملابس الأطفال والأطقم المطرزة في السعودية مع متجر JodiMini. شحن سريع، تقسيط تابي وتمارا، وتطريز مخصص لاسم طفلك."
+      content="صفحة هبوط تفاعلية لمتجر ملابس الأطفال السعودي JodiMini مع تجربة تسوق سريعة، ميزة تطريز الاسم وسلة مشتريات ذكية"
     />
     <meta name="keywords" content="ملابس أطفال, فساتين أطفال, تطريز اسم, ملابس رضع, JodiMini, أزياء أطفال سعودية, ملابس ولادي, ملابس بناتي" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="JodiMini | متجر ملابس أطفال سعودي - بريق الطفولة وأناقة التفاصيل" />
+    <meta property="og:title" content="JodiMini - متجر ملابس أطفال سعودي" />
     <meta
       property="og:description"
-      content="تسوقي أرقى أزياء وملابس الأطفال والأطقم المطرزة في السعودية مع متجر JodiMini. شحن سريع وتطريز مخصص باسم طفلك."
+      content="صفحة هبوط تفاعلية لمتجر ملابس الأطفال السعودي JodiMini مع تجربة تسوق سريعة، ميزة تطريز الاسم وسلة مشتريات ذكية"
     />
     <meta property="og:image" content="./assets/og-image.jpg" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="JodiMini | متجر ملابس أطفال سعودي" />
+    <meta name="twitter:title" content="JodiMini - متجر ملابس أطفال سعودي" />
     <meta
       name="twitter:description"
-      content="تسوقي أرقى أزياء وملابس الأطفال والأطقم المطرزة في السعودية مع متجر JodiMini."
+      content="صفحة هبوط تفاعلية لمتجر ملابس الأطفال السعودي JodiMini مع تجربة تسوق سريعة، ميزة تطريز الاسم وسلة مشتريات ذكية"
     />
     <meta name="twitter:image" content="./assets/og-image.jpg" />
 
@@ -58,62 +58,5 @@
   <link rel="manifest" href="./manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="./registerSW.js"></script></head>
   <body class="bg-[#FBF8F4] text-[#3B4B59] antialiased selection:bg-[#F497A9]/30 selection:text-[#3B4B59] min-h-screen">
     <div id="root"></div>
-
-    <!-- Fail-safe loader: If GitHub Pages is served statically from root branch without Vite compilation -->
-    <script>
-      (function() {
-        var isStaticHost = window.location.hostname.includes('github.io') || 
-                           window.location.hostname.includes('github.dev') ||
-                           window.location.protocol === 'file:';
-        if (isStaticHost) {
-          // Pre-inject compiled CSS for instant paint
-          if (!document.querySelector('link[href*="assets/style.css"]')) {
-            var css = document.createElement('link');
-            css.rel = 'stylesheet';
-            css.href = './assets/style.css';
-            document.head.appendChild(css);
-          }
-        }
-
-        window.__jodimini_mounted = false;
-        function loadFallback() {
-          if (window.__jodimini_mounted || window.__loading_fallback) return;
-          window.__loading_fallback = true;
-
-          if (!document.querySelector('link[href*="assets/style.css"]')) {
-            var css = document.createElement('link');
-            css.rel = 'stylesheet';
-            css.href = './assets/style.css';
-            document.head.appendChild(css);
-          }
-
-          var script = document.createElement('script');
-          script.type = 'module';
-          script.crossOrigin = 'anonymous';
-          script.src = './assets/app.js';
-          document.body.appendChild(script);
-        }
-
-        window.addEventListener('error', function(e) {
-          if (!window.__jodimini_mounted && e && e.message && (
-            e.message.indexOf('module') !== -1 || 
-            e.message.indexOf('resolve') !== -1 || 
-            e.message.indexOf('Unexpected') !== -1 ||
-            (e.filename && e.filename.indexOf('main.tsx') !== -1)
-          )) {
-            loadFallback();
-          }
-        });
-
-        // If static host and root is still empty after 350ms, trigger bundle load
-        setTimeout(function() {
-          var root = document.getElementById('root');
-          if (!window.__jodimini_mounted && (!root || !root.hasChildNodes())) {
-            loadFallback();
-          }
-        }, 350);
-      })();
-    </script>
-
   </body>
 </html>

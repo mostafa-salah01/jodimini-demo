@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface Particle {
   x: number;
@@ -27,11 +27,24 @@ export const InteractiveSparkles: React.FC = () => {
   const particlesRef = useRef<Particle[]>([]);
   const animFrameId = useRef<number | null>(null);
   const lastMovePos = useRef<{ x: number; y: number } | null>(null);
+  const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
-    // Respect reduced motion
+    // Only enable on desktop with non-touch devices to guarantee 0% mobile GPU overhead
+    const isMobileOrTouch =
+      'ontouchstart' in window ||
+      navigator.maxTouchPoints > 0 ||
+      window.innerWidth < 768;
+
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) return;
+
+    if (!isMobileOrTouch && !prefersReducedMotion) {
+      setEnabled(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!enabled) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -226,17 +239,17 @@ export const InteractiveSparkles: React.FC = () => {
     };
 
     window.addEventListener('mousedown', handlePointerDown);
-    window.addEventListener('touchstart', handlePointerDown, { passive: true });
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
     return () => {
       if (animFrameId.current) cancelAnimationFrame(animFrameId.current);
       window.removeEventListener('resize', resizeCanvas);
       window.removeEventListener('mousedown', handlePointerDown);
-      window.removeEventListener('touchstart', handlePointerDown);
       window.removeEventListener('mousemove', handleMouseMove);
     };
-  }, []);
+  }, [enabled]);
+
+  if (!enabled) return null;
 
   return (
     <canvas

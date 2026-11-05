@@ -19,7 +19,7 @@ export const PaymentShippingMarquee: React.FC<PaymentShippingMarqueeProps> = ({ 
   ];
 
   // Duplicate list to create a seamless infinite loop
-  const duplicatedItems = [...items, ...items, ...items];
+  const duplicatedItems = [...items, ...items];
 
   return (
     <div className="bg-[#3B4B59]/5 py-3.5 border-y border-[#3B4B59]/10 overflow-hidden select-none">
