@@ -15,6 +15,12 @@
   }
 }
 
+/* Force-hide install triggers when app is launched as an installed PWA */
+.app-is-installed [data-pwa-install],
+.app-is-installed .pwa-install-element {
+  display: none !important;
+}
+
 /* Embroidery Stitched Effect */
 .embroidery-text {
   letter-spacing: 0.05em;

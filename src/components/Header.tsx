@@ -105,9 +105,10 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Smart App Install Button (Android & iPhone) - hidden if already installed */}
           {!isInstalled && (
             <button
+              data-pwa-install="header-btn"
               type="button"
               onClick={onOpenSmartApp}
-              className="flex items-center gap-1.5 p-2 sm:px-3 sm:py-1.5 rounded-xl sm:rounded-full text-xs font-black text-white bg-gradient-to-r from-[#20969B] to-[#F26B4E] hover:from-[#F26B4E] hover:to-[#20969B] shadow-xs hover:shadow-md transition-all active:scale-95 group shrink-0"
+              className="pwa-install-element flex items-center gap-1.5 p-2 sm:px-3 sm:py-1.5 rounded-xl sm:rounded-full text-xs font-black text-white bg-gradient-to-r from-[#20969B] to-[#F26B4E] hover:from-[#F26B4E] hover:to-[#20969B] shadow-xs hover:shadow-md transition-all active:scale-95 group shrink-0"
               title={lang === 'ar' ? 'تحميل تطبيق JodiMini على هاتفك' : 'Install JodiMini App'}
               aria-label={lang === 'ar' ? 'تحميل تطبيق JodiMini على هاتفك' : 'Install JodiMini App'}
             >
@@ -200,12 +201,13 @@ export const Header: React.FC<HeaderProps> = ({
 
           {!isInstalled && (
             <button
+              data-pwa-install="mobile-menu-btn"
               type="button"
               onClick={() => {
                 setMobileMenuOpen(false);
                 onOpenSmartApp();
               }}
-              className="w-full text-start px-4 py-3 text-base font-bold text-white bg-gradient-to-r from-[#20969B] to-[#F26B4E] rounded-xl transition-all flex items-center justify-between shadow-xs mt-2"
+              className="pwa-install-element w-full text-start px-4 py-3 text-base font-bold text-white bg-gradient-to-r from-[#20969B] to-[#F26B4E] rounded-xl transition-all flex items-center justify-between shadow-xs mt-2"
             >
               <div className="flex items-center gap-2">
                 <Smartphone className="w-5 h-5 text-white" />

@@ -53,6 +53,43 @@
       href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Immediate Zero-Delay PWA Standalone Detection & Element Hiding -->
+    <script>
+      (function() {
+        try {
+          var s = window.location.search.toLowerCase();
+          var h = window.location.hash.toLowerCase();
+          var isStandalone = (
+            s.indexOf('source=pwa') !== -1 ||
+            s.indexOf('mode=standalone') !== -1 ||
+            s.indexOf('source=homescreen') !== -1 ||
+            s.indexOf('pwa=true') !== -1 ||
+            h.indexOf('pwa') !== -1 ||
+            window.matchMedia('(display-mode: standalone)').matches ||
+            window.matchMedia('(display-mode: fullscreen)').matches ||
+            window.matchMedia('(display-mode: minimal-ui)').matches ||
+            (window.navigator && window.navigator.standalone === true) ||
+            document.referrer.indexOf('android-app://') !== -1 ||
+            localStorage.getItem('jodimini_app_installed') === 'true' ||
+            sessionStorage.getItem('jodimini_app_installed') === 'true' ||
+            document.cookie.indexOf('jodimini_app_installed=true') !== -1
+          );
+
+          if (isStandalone) {
+            document.documentElement.classList.add('app-is-installed');
+            try {
+              localStorage.setItem('jodimini_app_installed', 'true');
+              sessionStorage.setItem('jodimini_app_installed', 'true');
+              document.cookie = 'jodimini_app_installed=true; max-age=31536000; path=/; SameSite=Lax';
+            } catch(e) {}
+            var style = document.createElement('style');
+            style.innerHTML = '.app-is-installed [data-pwa-install], .app-is-installed .pwa-install-element { display: none !important; }';
+            document.head.appendChild(style);
+          }
+        } catch(e) {}
+      })();
+    </script>
     <script type="module" crossorigin src="./assets/app.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/style.css">
   <link rel="manifest" href="./manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="./registerSW.js"></script></head>

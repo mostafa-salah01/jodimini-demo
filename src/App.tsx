@@ -21,7 +21,7 @@ import { AgeCategory, BundleItem, CartItem, Language, Product } from './types';
 import { PRODUCTS } from './data/products';
 import { TRANSLATIONS } from './data/translations';
 import { Check, Sparkles, Smartphone } from 'lucide-react';
-import { usePWAInstall } from './hooks/usePWAInstall';
+import { usePWAInstall, isAppRunningAsPWA } from './hooks/usePWAInstall';
 
 export const App: React.FC = () => {
   // 1) Language state: default Arabic (RTL)
@@ -41,6 +41,7 @@ export const App: React.FC = () => {
 
   // PWA Install State & Detection
   const { isInstalled, isInstallable, isIOS, install, markAsInstalled } = usePWAInstall();
+  const effectiveInstalled = isInstalled || isAppRunningAsPWA();
 
   // 2) Age Filter State
   const [selectedAge, setSelectedAge] = useState<AgeCategory>('all');
@@ -87,7 +88,7 @@ export const App: React.FC = () => {
 
   // Trigger Smart App sheet once per session (strictly guarded against already installed)
   const triggerSmartApp = () => {
-    if (isInstalled) return;
+    if (effectiveInstalled) return;
     setShowFloatingInstallBadge(true);
     const alreadyShown = sessionStorage.getItem('jodimini_smart_app_shown');
     if (!alreadyShown && !hasShownSmartApp) {
@@ -99,7 +100,7 @@ export const App: React.FC = () => {
 
   // Direct 1-Click Install or Open Quick Sheet
   const handleOpenSmartApp = async () => {
-    if (isInstalled) return;
+    if (effectiveInstalled) return;
     if (!isIOS && isInstallable) {
       const accepted = await install();
       if (accepted) {
@@ -113,15 +114,15 @@ export const App: React.FC = () => {
 
   // Timer trigger: 7 seconds of browsing as requested by user (only if NOT installed)
   useEffect(() => {
-    if (isInstalled) return;
+    if (effectiveInstalled) return;
     const timer = setTimeout(() => {
-      if (!isInstalled) {
+      if (!effectiveInstalled) {
         setShowFloatingInstallBadge(true);
         triggerSmartApp();
       }
     }, 7000);
     return () => clearTimeout(timer);
-  }, [isInstalled]);
+  }, [effectiveInstalled]);
 
   // Open Quick View & track viewed products
   const handleOpenQuickView = (product: Product) => {
@@ -255,7 +256,7 @@ export const App: React.FC = () => {
         cartCount={cartItems.reduce((sum, item) => sum + item.quantity, 0)}
         onOpenCart={() => setIsCartOpen(true)}
         onOpenSmartApp={handleOpenSmartApp}
-        isInstalled={isInstalled}
+        isInstalled={effectiveInstalled}
       />
 
       {/* Main Page Flow */}
@@ -344,10 +345,11 @@ export const App: React.FC = () => {
       <InteractiveSparkles />
 
       {/* 12.5 Floating Smart App Install Badge (Only shown if NOT installed) */}
-      {!isInstalled && showFloatingInstallBadge && (
+      {!effectiveInstalled && showFloatingInstallBadge && (
         <aside
+          data-pwa-install="floating-badge"
           aria-label="Smart App Install"
-          className="fixed bottom-4 sm:bottom-6 end-3 sm:end-6 z-40 animate-in fade-in slide-in-from-bottom-5 duration-300"
+          className="pwa-install-element fixed bottom-4 sm:bottom-6 end-3 sm:end-6 z-40 animate-in fade-in slide-in-from-bottom-5 duration-300"
         >
           <button
             type="button"
@@ -406,7 +408,7 @@ export const App: React.FC = () => {
 
       {/* 14. Smart App Install Bottom Sheet (Only if NOT installed) */}
       <SmartAppSheet
-        isOpen={!isInstalled && isSmartAppOpen}
+        isOpen={!effectiveInstalled && isSmartAppOpen}
         onClose={() => setIsSmartAppOpen(false)}
         lang={lang}
         onInstalled={markAsInstalled}
