@@ -67,7 +67,7 @@ if (!self.define) {
     });
   };
 }
-define(['./workbox-7e5eb42b'], (function (workbox) { 'use strict';
+define(['./workbox-a24bf94b'], (function (workbox) { 'use strict';
 
   self.skipWaiting();
   workbox.clientsClaim();
@@ -78,7 +78,7 @@ define(['./workbox-7e5eb42b'], (function (workbox) { 'use strict';
    */
   workbox.precacheAndRoute([{
     "url": "registerSW.js",
-    "revision": "402b66900e731ca748771b6fc5e7a068"
+    "revision": "b88fc0d66e4148b8515a9a95948e153a"
   }, {
     "url": "pwa-512x512.png",
     "revision": "17b884fc05f54d79adf01ec49ba5b621"
@@ -87,7 +87,7 @@ define(['./workbox-7e5eb42b'], (function (workbox) { 'use strict';
     "revision": "79f8fc9f1f9d2b4e70104ffef6f2d326"
   }, {
     "url": "index.html",
-    "revision": "38f3a14124b7a6b1bbfddf751df27d91"
+    "revision": "7541732c2a0be108b5afef7529804eec"
   }, {
     "url": "favicon.png",
     "revision": "cdeaa83b4ea6463a4d0041d5ea8ad5b9"
@@ -253,5 +253,19 @@ define(['./workbox-7e5eb42b'], (function (workbox) { 'use strict';
   }], {});
   workbox.cleanupOutdatedCaches();
   workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("index.html")));
+  workbox.registerRoute(({
+    request
+  }) => request.mode === "navigate", new workbox.NetworkFirst({
+    "cacheName": "html-pages-cache",
+    "networkTimeoutSeconds": 2,
+    plugins: []
+  }), 'GET');
+  workbox.registerRoute(({
+    request
+  }) => request.destination === "script" || request.destination === "style", new workbox.NetworkFirst({
+    "cacheName": "code-bundles-cache",
+    "networkTimeoutSeconds": 2,
+    plugins: []
+  }), 'GET');
 
 }));

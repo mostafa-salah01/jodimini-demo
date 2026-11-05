@@ -46,8 +46,33 @@ export default defineConfig({
         ],
       },
       workbox: {
+        cleanupOutdatedCaches: true,
+        skipWaiting: true,
+        clientsClaim: true,
         maximumFileSizeToCacheInBytes: 15 * 1024 * 1024,
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff,woff2}'],
+        navigateFallback: 'index.html',
+        runtimeCaching: [
+          {
+            // Network-first for HTML so updates show up immediately when opening app
+            urlPattern: ({ request }) => request.mode === 'navigate',
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'html-pages-cache',
+              networkTimeoutSeconds: 2,
+            },
+          },
+          {
+            // Network-first for scripts and styles to guarantee latest updates
+            urlPattern: ({ request }) =>
+              request.destination === 'script' || request.destination === 'style',
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'code-bundles-cache',
+              networkTimeoutSeconds: 2,
+            },
+          },
+        ],
       },
       devOptions: {
         enabled: true,

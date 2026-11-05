@@ -85,12 +85,10 @@ export const App: React.FC = () => {
 
   // Tracking state for user actions
   const [viewedProductsCount, setViewedProductsCount] = useState(0);
-  const [showFloatingInstallBadge, setShowFloatingInstallBadge] = useState(false);
 
-  // Trigger Smart App sheet once per session (strictly guarded against already installed)
+  // Trigger Smart App sheet only on user intent (strictly guarded against already installed)
   const triggerSmartApp = () => {
     if (effectiveInstalled) return;
-    setShowFloatingInstallBadge(true);
     const alreadyShown = sessionStorage.getItem('jodimini_smart_app_shown');
     if (!alreadyShown && !hasShownSmartApp) {
       setIsSmartAppOpen(true);
@@ -99,7 +97,7 @@ export const App: React.FC = () => {
     }
   };
 
-  // Direct 1-Click Install or Open Quick Sheet
+  // User clicked "حمّلي التطبيق" in the Header or Menu
   const handleOpenSmartApp = async () => {
     if (effectiveInstalled) return;
     if (!isIOS && isInstallable) {
@@ -112,18 +110,6 @@ export const App: React.FC = () => {
     }
     setIsSmartAppOpen(true);
   };
-
-  // Timer trigger: 7 seconds of browsing as requested by user (only if NOT installed)
-  useEffect(() => {
-    if (effectiveInstalled) return;
-    const timer = setTimeout(() => {
-      if (!effectiveInstalled) {
-        setShowFloatingInstallBadge(true);
-        triggerSmartApp();
-      }
-    }, 7000);
-    return () => clearTimeout(timer);
-  }, [effectiveInstalled]);
 
   // Open Quick View & track viewed products
   const handleOpenQuickView = (product: Product) => {
@@ -291,11 +277,15 @@ export const App: React.FC = () => {
               </p>
             </div>
 
-            <span className="text-xs sm:text-sm font-bold text-[#3B4B59]/60">
-              {lang === 'ar'
-                ? `عرض ${filteredProducts.length} من أصل 9 قطع أزياء`
-                : `Showing ${filteredProducts.length} of 9 styles`}
-            </span>
+            <div className="flex items-center sm:items-end gap-4 shrink-0">
+              <span className="text-xs sm:text-sm font-bold text-[#3B4B59]/60 self-center sm:self-end">
+                {lang === 'ar'
+                  ? `عرض ${filteredProducts.length} من أصل 9 قطع أزياء`
+                  : `Showing ${filteredProducts.length} of 9 styles`}
+              </span>
+              {/* Stationary waving girl in empty header spot without speech messages */}
+              <HeroChildGreeting />
+            </div>
           </div>
 
           {/* Grid with alternating slide-in animations */}
@@ -342,35 +332,10 @@ export const App: React.FC = () => {
       {/* 12. Floating WhatsApp button */}
       <FloatingWhatsApp lang={lang} />
 
-      {/* 12.05 Real Child Welcome Greeting (Slides in when user scrolls down to products section & stays waving) */}
-      <HeroChildGreeting lang={lang} />
-
       {/* 12.1 Interactive Sparkles (Touch/Cursor trails & Click Starburst Explosion) */}
       <InteractiveSparkles />
 
-      {/* 12.5 Floating Smart App Install Badge (Only shown if NOT installed) */}
-      {!effectiveInstalled && showFloatingInstallBadge && (
-        <aside
-          data-pwa-install="floating-badge"
-          aria-label="Smart App Install"
-          className="pwa-install-element fixed bottom-4 sm:bottom-6 end-3 sm:end-6 z-40 animate-in fade-in slide-in-from-bottom-5 duration-300"
-        >
-          <button
-            type="button"
-            onClick={handleOpenSmartApp}
-            className="flex items-center gap-1.5 sm:gap-2.5 px-3 py-2 sm:px-4 sm:py-3 rounded-full bg-gradient-to-r from-[#20969B] to-[#F26B4E] hover:from-[#F26B4E] hover:to-[#20969B] text-white font-extrabold text-xs sm:text-sm shadow-xl hover:shadow-[#F26B4E]/40 border-2 border-white transition-all transform hover:scale-105 active:scale-95 group focus:outline-none focus:ring-4 focus:ring-[#20969B]/40 cursor-pointer"
-          >
-            <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/20 flex items-center justify-center shrink-0">
-              <Smartphone className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white animate-pulse" />
-            </div>
-            <span>
-              {lang === 'ar' ? 'حمّلي التطبيق' : 'Install App'}
-              <span className="hidden md:inline">{lang === 'ar' ? ' (آيفون وأندرويد)' : ' (iOS & Android)'}</span>
-            </span>
-            <span className="w-2 h-2 rounded-full bg-[#F9A620] animate-ping" />
-          </button>
-        </aside>
-      )}
+
 
       {/* 13. Modals and Drawers */}
       <QuickViewModal
